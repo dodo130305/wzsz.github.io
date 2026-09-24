@@ -358,7 +358,6 @@
 
     <!-- 内容区域 -->
     <main class="content">
-        <button class="feedback-entry-btn" id="feedbackEntryBtn">💬 反馈</button>
         <nav class="top-nav">
             <a href="index.html">主页</a>
             <a href="youth.html" class="active">我的青春</a>
@@ -399,12 +398,6 @@
     <div class="preview-modal" id="previewModal" onclick="closePreview()">
         <button class="preview-close" onclick="closePreview()">×</button>
         <div id="previewContent"></div>
-    </div>
-
-    <!-- 桌宠 -->
-    <div class="desktop-pet idle" id="desktopPet">
-        <div class="pet-speech" id="petSpeech">欢迎来到我的青春～</div>
-        <img src="pet.png" alt="桌宠">
     </div>
 
     <div class="footer">
@@ -563,53 +556,13 @@
             document.getElementById('previewContent').innerHTML = '';
         }
 
-        // ===== 桌宠（简化版） =====
-        function initPet() {
-            const pet = document.getElementById('desktopPet');
-            const speech = document.getElementById('petSpeech');
-            if (!pet) return;
-            const phrases = ['欢迎来到我的青春～', '这些回忆好珍贵呀', '青春不散场！', '陪我看看照片嘛～', '那时候真好呀', '再看看这个！', '嘿嘿，被你发现了'];
-            let timer = null;
-            function say(text) {
-                speech.textContent = text;
-                speech.classList.add('show');
-                if (timer) clearTimeout(timer);
-                timer = setTimeout(() => speech.classList.remove('show'), 2500);
-            }
-            pet.addEventListener('click', function() {
-                say(phrases[Math.floor(Math.random() * phrases.length)]);
-            });
-            // 拖拽
-            let sx = 0, sy = 0, sl = 0, st = 0;
-            pet.addEventListener('mousedown', function(e) {
-                sx = e.clientX; sy = e.clientY;
-                const r = pet.getBoundingClientRect();
-                sl = r.left; st = r.top;
-                pet.style.right = 'auto'; pet.style.bottom = 'auto';
-                function mv(ev) {
-                    pet.style.left = (sl + ev.clientX - sx) + 'px';
-                    pet.style.top = (st + ev.clientY - sy) + 'px';
-                }
-                function up() {
-                    document.removeEventListener('mousemove', mv);
-                    document.removeEventListener('mouseup', up);
-                }
-                document.addEventListener('mousemove', mv);
-                document.addEventListener('mouseup', up);
-                e.preventDefault();
-            });
-            setTimeout(() => say('欢迎来到我的青春～'), 1500);
-        }
-
         // 初始化
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
                 autoLoadVideos();
-                initPet();
             });
         } else {
             autoLoadVideos();
-            initPet();
         }
     </script>
 </body>
