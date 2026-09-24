@@ -1,0 +1,4277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刘子铖 | 个人主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+            background: #f5f3ee;
+            color: #1a1a1a;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* ===== Hero 全屏区域 ===== */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 600px;
+            background: #0a0a0f;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+            cursor: zoom-in;
+            z-index: 2;
+            -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+        }
+
+        /* 视频背景 */
+        .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            /* 亮度轻微调高 */
+            filter: brightness(1.1) contrast(1.05);
+        }
+
+        /* 暗色渐变遮罩 */
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(10, 10, 15, 0.3) 0%,
+                rgba(10, 10, 15, 0.1) 40%,
+                rgba(10, 10, 15, 0.2) 70%,
+                rgba(245, 243, 238, 1) 100%
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Hero 内容 */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            padding: 0 24px 60px 24px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-name {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+            margin-bottom: 8px;
+        }
+
+        .hero-title {
+            font-size: 18px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 1px;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .hero-location svg {
+            width: 16px;
+            height: 16px;
+            fill: rgba(255, 255, 255, 0.7);
+        }
+
+        /* 头像 */
+        .avatar-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            flex-shrink: 0;
+        }
+
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ===== 反馈入口按钮 ===== */
+        .feedback-entry-btn {
+            position: absolute;
+            right: -100px;
+            top: 40px;
+            background: rgba(255, 105, 180, 0.95);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 16px rgba(255, 105, 180, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .feedback-entry-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+        }
+
+        /* ===== 顶部导航 ===== */
+        .top-nav {
+            position: absolute;
+            right: -340px;
+            top: 36px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            z-index: 100;
+        }
+        .top-nav a {
+            color: #fff;
+            font-size: 26px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+        }
+        .top-nav a:hover {
+            color: #ffb6c1;
+            transform: translateY(-2px);
+        }
+        .top-nav a.active {
+            color: #fff;
+            position: relative;
+        }
+        .top-nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: #ff69b4;
+            border-radius: 2px;
+        }
+
+        /* ===== 反馈弹窗 ===== */
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .feedback-modal.active {
+            display: flex;
+        }
+
+        .feedback-modal-content {
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feedback-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #ff69b4, #ff8ec7);
+            color: #fff;
+        }
+
+        .feedback-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .feedback-modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .feedback-modal-close:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(90deg);
+        }
+
+        .feedback-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        /* 表单 */
+        .feedback-form-group {
+            margin-bottom: 16px;
+        }
+
+        .feedback-form-label {
+            display: block;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .feedback-form-input,
+        .feedback-form-select,
+        .feedback-form-textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+            font-family: inherit;
+        }
+
+        .feedback-form-input:focus,
+        .feedback-form-select:focus,
+        .feedback-form-textarea:focus {
+            outline: none;
+            border-color: #ff69b4;
+        }
+
+        .feedback-form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .feedback-form-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff69b4, #ff8ec7);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .feedback-form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+        }
+
+        /* 关系选择按钮组 */
+        .relation-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .relation-btn {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: #fff;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .relation-btn.active {
+            border-color: #ff69b4;
+            background: #fff0f5;
+            color: #ff69b4;
+        }
+
+        /* 反馈表格 */
+        .feedback-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .feedback-table th,
+        .feedback-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .feedback-table th {
+            background: #f8f8f8;
+            font-weight: 600;
+            color: #333;
+            position: sticky;
+            top: 0;
+        }
+
+        .feedback-table td {
+            color: #555;
+        }
+
+        .feedback-empty {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+
+        /* 切换标签 */
+        .feedback-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .feedback-tab {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #999;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s ease;
+        }
+
+        .feedback-tab.active {
+            color: #ff69b4;
+            border-bottom-color: #ff69b4;
+            font-weight: 600;
+        }
+
+        .feedback-success {
+            text-align: center;
+            padding: 30px;
+            color: #4caf50;
+        }
+
+        .feedback-success-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        /* 向下滚动提示 */
+        .scroll-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            letter-spacing: 2px;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-hint svg {
+            width: 20px;
+            height: 20px;
+            fill: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== 动漫风装饰元素（可爱粉色版） ===== */
+        /* 樱花花瓣飘落 */
+        .sakura-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        .sakura {
+            position: absolute;
+            top: -20px;
+            font-size: 16px;
+            opacity: 0.7;
+            animation: sakuraFall linear infinite;
+        }
+
+        @keyframes sakuraFall {
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* 闪烁光点 */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+            animation: sparkle 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        /* 卡片粉色装饰角 */
+        .card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), transparent);
+            border-radius: 20px 0 20px 0;
+            pointer-events: none;
+        }
+
+        .card::after {
+            content: "✦";
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 14px;
+            color: rgba(255, 182, 193, 0.6);
+            pointer-events: none;
+        }
+
+        /* 卡片标题粉色渐变装饰线 */
+        .card-title {
+            position: relative;
+            padding-left: 12px;
+        }
+
+        .card-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(to bottom, #ffb6c1, #ff69b4);
+            border-radius: 2px;
+        }
+
+        /* ===== 内容区域 ===== */
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 80px 20px;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* 全局背景图（不固定，跟随滚动） */
+        .side-bg {
+            position: absolute;
+            top: 100vh;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('page-bg.jpg') center center / cover no-repeat;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        /* 卡片通用样式 */
+        .card {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .icon-about { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .icon-hobby { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .icon-contact { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+
+        /* 关于我 - 信息网格 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .info-item {
+            background: #f7f5f0;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .info-value small {
+            font-size: 13px;
+            font-weight: 400;
+            color: #999;
+        }
+
+        /* 兴趣爱好标签 */
+        .hobby-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hobby-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #fff5f7, #ffeef2);
+            border: 1px solid rgba(255, 182, 193, 0.4);
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #d4688a;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hobby-tag::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .hobby-tag:hover::before {
+            left: 100%;
+        }
+
+        .hobby-tag:hover {
+            background: linear-gradient(135deg, #ffeef2, #ffd9e3);
+            border-color: rgba(255, 105, 180, 0.5);
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+        }
+
+        .hobby-tag .emoji {
+            font-size: 18px;
+        }
+
+        /* 卡片副标题 */
+        .card-subtitle {
+            font-size: 13px;
+            color: #999;
+            margin: 8px 0 20px 0;
+        }
+
+        /* 我的足迹城市网格 */
+        .travel-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .travel-city {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .travel-city:hover {
+            transform: translateY(-4px);
+            border-color: #ff69b4;
+            box-shadow: 0 8px 24px rgba(255, 105, 180, 0.3);
+        }
+
+        .travel-city-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 40px 14px 14px 14px;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+            box-sizing: border-box;
+        }
+
+        .travel-city-name {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .travel-city-country {
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        /* 足迹照片弹窗 */
+        /* ===== 我的足迹入口卡片 ===== */
+        .travel-entry-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .travel-entry-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 105, 180, 0.2);
+        }
+
+        /* ===== 足迹页面（城市列表） ===== */
+        .travel-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            z-index: 9998;
+            overflow-y: auto;
+            flex-direction: column;
+        }
+
+        .travel-page.active {
+            display: flex;
+        }
+
+        .travel-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .travel-page-back {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .travel-page-back:hover {
+            background: rgba(255, 105, 180, 0.4);
+        }
+
+        .travel-page-title {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .travel-page .travel-grid {
+            padding: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+
+        /* ===== 城市照片轮播页面 ===== */
+        .city-slide-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .city-slide-page.active {
+            display: flex;
+        }
+
+        .city-slide-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .city-slide-back:hover {
+            background: rgba(255, 105, 180, 0.6);
+        }
+
+        .city-slide-info {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .city-slide-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .city-slide-country {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 4px;
+        }
+
+        .city-slide-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .city-slide-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: flex-start;
+            transition: transform 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .city-slide-track .city-photo-wrap {
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .city-slide-track img {
+            max-width: 90%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .city-slide-counter {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 13px;
+            backdrop-filter: blur(4px);
+        }
+
+        .city-slide-nav {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 10;
+        }
+
+        .city-slide-prev,
+        .city-slide-next {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .city-slide-prev:hover,
+        .city-slide-next:hover {
+            background: rgba(255, 105, 180, 0.6);
+            transform: scale(1.1);
+        }
+
+        .city-slide-music {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .city-slide-music:hover {
+            background: rgba(255, 105, 180, 0.6);
+        }
+
+        .city-slide-music.playing {
+            background: rgba(255, 105, 180, 0.6);
+            animation: musicPulse 2s infinite;
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 105, 180, 0); }
+        }
+
+        .city-slide-dots {
+            position: absolute;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .city-slide-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .city-slide-dot.active {
+            background: #ff69b4;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* 联系方式 */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: #f7f5f0;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: #eeebe4;
+            transform: translateX(4px);
+        }
+
+        .contact-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: #fff;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 2px;
+        }
+
+        .contact-value {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1a1a1a;
+            word-break: break-all;
+        }
+
+        .contact-arrow {
+            color: #ccc;
+            font-size: 20px;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #bbb;
+            font-size: 13px;
+        }
+
+        .footer .version {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #e8e5df;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* ===== 动画 ===== */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-8px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-4px);
+            }
+        }
+
+        /* ===== Lightbox 放大预览 ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-video {
+            max-width: 92%;
+            max-height: 92%;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease;
+            filter: brightness(1.1) contrast(1.05);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            color: #fff;
+            font-size: 32px;
+            font-weight: 300;
+            cursor: pointer;
+            z-index: 1001;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transition: background 0.2s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .lightbox-hint {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.5);
+            font-size: 13px;
+            z-index: 1001;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* 点击放大提示 */
+        .zoom-hint {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            font-size: 13px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.3s ease;
+        }
+
+        .hero:hover .zoom-hint {
+            opacity: 0.7;
+        }
+
+        /* ===== 歌曲列表弹窗 ===== */
+        .music-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .music-modal.active {
+            display: flex;
+        }
+
+        .music-modal-content {
+            background: #fff;
+            border-radius: 20px;
+            padding: 28px;
+            width: 90%;
+            max-width: 420px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: zoomIn 0.3s ease;
+            position: relative;
+        }
+
+        .music-modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .music-modal-subtitle {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .music-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .music-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #fff5f7, #ffeef2);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .music-item:hover {
+            background: linear-gradient(135deg, #ffeef2, #ffd9e3);
+            border-color: rgba(255, 105, 180, 0.4);
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
+        }
+
+        .music-item-index {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .music-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .music-item-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-item-artist {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .music-item-play {
+            color: #ff69b4;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .music-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            color: #999;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .music-modal-close:hover {
+            background: #eee;
+            color: #666;
+        }
+
+        /* ===== 内置播放器 ===== */
+        .player-bar {
+            margin-top: 20px;
+            padding: 16px;
+            background: linear-gradient(135deg, #fff5f7, #ffeef2);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            border-radius: 12px;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .player-cover {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .player-song-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .player-song-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-song-artist {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .player-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid rgba(255, 182, 193, 0.4);
+            color: #ff69b4;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .player-btn:hover {
+            background: #ff69b4;
+            color: #fff;
+            border-color: #ff69b4;
+        }
+
+        .player-btn.play-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            color: #fff;
+            border: none;
+        }
+
+        .player-btn.play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+        }
+
+        .player-progress {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 182, 193, 0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #ffb6c1, #ff69b4);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .player-time {
+            font-size: 11px;
+            color: #999;
+            flex-shrink: 0;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .player-volume {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .player-volume-icon {
+            color: #ff69b4;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .player-volume-slider {
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 182, 193, 0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .player-volume-fill {
+            height: 100%;
+            background: linear-gradient(to right, #ffb6c1, #ff69b4);
+            border-radius: 2px;
+            width: 70%;
+        }
+
+        .player-hint {
+            margin-top: 10px;
+            font-size: 11px;
+            color: #bbb;
+            text-align: center;
+        }
+
+        /* ===== 游戏视频弹窗 ===== */
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .game-modal.active {
+            display: flex;
+        }
+
+        .game-modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            background: #1a1a1a;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .game-modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .game-modal-close:hover {
+            background: rgba(255, 105, 180, 0.6);
+            transform: rotate(90deg);
+        }
+
+        .game-video-container {
+            position: relative;
+            width: 100%;
+            background: #000;
+        }
+
+        .game-video {
+            width: 100%;
+            display: block;
+            max-height: 70vh;
+        }
+
+        .game-videos-wrapper {
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 16px;
+            background: #0a0a0a;
+        }
+
+        .game-videos-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .game-videos-wrapper::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .game-videos-wrapper::-webkit-scrollbar-thumb {
+            background: #ff69b4;
+            border-radius: 3px;
+        }
+
+        .game-video-item {
+            margin-bottom: 24px;
+        }
+
+        .game-video-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .game-video-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ff69b4;
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+
+        /* ===== 足球图片弹窗 ===== */
+        .football-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .football-modal.active {
+            display: flex;
+        }
+
+        .football-modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            aspect-ratio: 1121 / 2436;
+            background-image: url('football-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .football-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.5) 100%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 40px 30px 60px 30px;
+            box-sizing: border-box;
+        }
+
+        .football-modal-text {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.6;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.2);
+            letter-spacing: 2px;
+        }
+
+        .football-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+
+        .football-modal-close:hover {
+            background: rgba(255, 105, 180, 0.8);
+            transform: rotate(90deg);
+        }
+
+        /* ===== 足球图片轮播（相片滑动模式） ===== */
+        .football-carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .football-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transform: translateX(100%) scale(0.85);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.4s ease;
+        }
+
+        .football-slide.active {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .football-slide.prev {
+            transform: translateX(-100%) scale(0.85);
+            opacity: 0;
+        }
+
+        .football-slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .food-modal-content .football-slide {
+            background-color: #111;
+        }
+
+        .food-modal-content .football-slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .football-slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.6) 100%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 40px 30px 60px 30px;
+            box-sizing: border-box;
+        }
+
+        .football-slide-text {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.6;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.2);
+            letter-spacing: 2px;
+        }
+
+        .food-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #fff;
+            font-size: 15px;
+            padding: 10px 24px;
+            border-radius: 25px;
+            white-space: nowrap;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 5;
+        }
+
+        /* 美食弹窗：横向长方形，完整显示图片 */
+        .food-modal-content {
+            max-width: 90vw;
+            width: 900px;
+            max-height: 85vh;
+            aspect-ratio: auto;
+            height: 85vh;
+            background: #111;
+        }
+
+        .football-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+
+        .football-nav:hover {
+            background: rgba(255, 105, 180, 0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .football-nav.prev {
+            left: 12px;
+        }
+
+        .football-nav.next {
+            right: 12px;
+        }
+
+        .football-dots {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .football-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .football-dot.active {
+            background: #ff69b4;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .football-counter {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 600px) {
+            .hero-name {
+                font-size: 36px;
+            }
+            .hero-title {
+                font-size: 15px;
+            }
+            .avatar-box {
+                width: 80px;
+                height: 80px;
+                border-radius: 12px;
+            }
+            .hero-content {
+                padding: 0 20px 50px 20px;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .card {
+                padding: 22px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero-name {
+                font-size: 64px;
+            }
+            .hero-title {
+                font-size: 22px;
+            }
+            .avatar-box {
+                width: 120px;
+                height: 120px;
+            }
+            .content {
+                padding: 60px 20px 100px 20px;
+            }
+        }
+
+        /* 尊重减少动画偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ===== 互动桌宠 ===== */
+        .desktop-pet {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 120px;
+            height: 130px;
+            z-index: 2147483647;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            background: transparent;
+            border: none;
+            outline: none;
+            transition: width 0.2s, height 0.2s;
+        }
+        .desktop-pet img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            background: transparent;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            transition: transform 0.15s ease;
+        }
+        .desktop-pet.idle img {
+            animation: petIdle 3s ease-in-out infinite;
+        }
+        @keyframes petIdle {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(1deg); }
+        }
+        /* 跳跃 */
+        .desktop-pet.jump img {
+            animation: petJump 0.6s ease-out;
+        }
+        @keyframes petJump {
+            0% { transform: translateY(0) scale(1,1); }
+            20% { transform: translateY(0) scale(1.2, 0.8); }
+            40% { transform: translateY(-50px) scale(0.9, 1.1); }
+            60% { transform: translateY(-50px) scale(0.9, 1.1); }
+            80% { transform: translateY(0) scale(1.2, 0.8); }
+            100% { transform: translateY(0) scale(1,1); }
+        }
+        /* 压扁回弹 */
+        .desktop-pet.squash img {
+            animation: petSquash 0.5s ease-out;
+        }
+        @keyframes petSquash {
+            0% { transform: scale(1,1); }
+            30% { transform: scale(1.4, 0.6); }
+            50% { transform: scale(0.8, 1.2); }
+            70% { transform: scale(1.1, 0.9); }
+            100% { transform: scale(1,1); }
+        }
+        /* 左右抖动 */
+        .desktop-pet.shake img {
+            animation: petShake 0.5s ease-in-out;
+        }
+        @keyframes petShake {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            15% { transform: translateX(-10px) rotate(-5deg); }
+            30% { transform: translateX(10px) rotate(5deg); }
+            45% { transform: translateX(-8px) rotate(-4deg); }
+            60% { transform: translateX(8px) rotate(4deg); }
+            75% { transform: translateX(-4px) rotate(-2deg); }
+        }
+        /* 拖拽跑步姿势 */
+        .desktop-pet.dragging {
+            cursor: grabbing;
+        }
+        .desktop-pet.dragging img {
+            animation: petRun 0.3s ease-in-out infinite;
+        }
+        @keyframes petRun {
+            0%, 100% { transform: translateY(0) rotate(-3deg) scale(1.05); }
+            50% { transform: translateY(-4px) rotate(3deg) scale(1.05); }
+        }
+        /* 睡觉 */
+        .desktop-pet.sleeping img {
+            animation: petSleep 4s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)) brightness(0.85);
+        }
+        @keyframes petSleep {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-3px) scale(1.02); }
+        }
+        /* 对话气泡 — 放在角色左侧，不遮挡 */
+        .pet-speech {
+            position: absolute;
+            top: 10%;
+            right: 100%;
+            margin-right: 12px;
+            background: #fff;
+            border: 2px solid #ffb6c1;
+            border-radius: 16px;
+            padding: 8px 14px;
+            font-size: 13px;
+            color: #333;
+            opacity: 0;
+            transform: scale(0) translateX(10px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
+            pointer-events: none;
+            max-width: 180px;
+            white-space: normal;
+            text-align: center;
+            line-height: 1.4;
+            z-index: 2147483647;
+        }
+        .pet-speech::after {
+            content: '';
+            position: absolute;
+            left: 100%;
+            top: 30%;
+            border: 8px solid transparent;
+            border-left-color: #ffb6c1;
+        }
+        .pet-speech.show {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+        }
+        /* 睡觉Zzz */
+        .pet-zzz {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            font-size: 18px;
+            color: #999;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .desktop-pet.sleeping .pet-zzz {
+            animation: zzzFloat 2s ease-in-out infinite;
+        }
+        @keyframes zzzFloat {
+            0% { opacity: 0; transform: translateY(0) scale(0.8); }
+            50% { opacity: 1; transform: translateY(-15px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-30px) scale(0.9); }
+        }
+        /* 右键菜单 */
+        .pet-menu {
+            position: fixed;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            padding: 6px 0;
+            z-index: 2147483647;
+            display: none;
+            min-width: 140px;
+            font-size: 13px;
+        }
+        .pet-menu.show {
+            display: block;
+        }
+        .pet-menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+            transition: background 0.15s;
+        }
+        .pet-menu-item:hover {
+            background: #fff0f3;
+            color: #e91e63;
+        }
+        .pet-menu-item .icon {
+            font-size: 15px;
+            width: 20px;
+            text-align: center;
+        }
+        .pet-menu-divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 4px 0;
+        }
+        /* 召唤按钮 */
+        .pet-revive {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border: 2px solid #ffb6c1;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2147483646;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
+            transition: transform 0.2s;
+        }
+        .pet-revive:hover {
+            transform: scale(1.1);
+        }
+
+        /* ===== 数字分身聊天 ===== */
+        .twin-fab {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: 3px solid #fff;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            cursor: pointer;
+            z-index: 2147483640;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        .twin-fab:hover { transform: scale(1.08); }
+        .twin-fab img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .twin-fab .twin-fab-icon { font-size: 30px; }
+        .twin-fab .twin-dot {
+            position: absolute;
+            top: 4px; right: 4px;
+            width: 14px; height: 14px;
+            background: #4ade80;
+            border: 2px solid #fff;
+            border-radius: 50%;
+        }
+
+        .twin-panel {
+            position: fixed;
+            bottom: 100px;
+            left: 24px;
+            width: 380px;
+            max-width: calc(100vw - 40px);
+            height: 560px;
+            max-height: calc(100vh - 140px);
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+            z-index: 2147483641;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .twin-panel.show { display: flex; animation: twinPop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes twinPop {
+            from { opacity: 0; transform: translateY(20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .twin-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .twin-header-avatar {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.6);
+            flex: 0 0 auto;
+            background: #fff;
+        }
+        .twin-header-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .twin-header-info { flex: 1; }
+        .twin-header-name { font-size: 16px; font-weight: 700; }
+        .twin-header-status { font-size: 12px; opacity: 0.9; display: flex; align-items: center; gap: 5px; }
+        .twin-header-status::before {
+            content: '';
+            width: 7px; height: 7px;
+            background: #4ade80;
+            border-radius: 50%;
+        }
+        .twin-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0.8;
+            line-height: 1;
+            padding: 4px;
+        }
+        .twin-close:hover { opacity: 1; }
+
+        .twin-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background: #f7f7fb;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .twin-msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+        .twin-msg.bot {
+            background: #fff;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .twin-msg.user {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .twin-typing {
+            align-self: flex-start;
+            background: #fff;
+            padding: 12px 16px;
+            border-radius: 16px;
+            border-bottom-left-radius: 4px;
+            display: none;
+            gap: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .twin-typing.show { display: flex; }
+        .twin-typing span {
+            width: 8px; height: 8px;
+            background: #aaa;
+            border-radius: 50%;
+            animation: twinBounce 1.2s infinite;
+        }
+        .twin-typing span:nth-child(2) { animation-delay: 0.2s; }
+        .twin-typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes twinBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        .twin-quick {
+            padding: 10px 12px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+        .twin-quick button {
+            flex: 0 0 auto;
+            background: #f0f0fa;
+            color: #667eea;
+            border: 1px solid #e0e0f5;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .twin-quick button:hover { background: #667eea; color: #fff; }
+
+        .twin-input-bar {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+        .twin-input {
+            flex: 1;
+            border: 1px solid #e0e0e8;
+            border-radius: 20px;
+            padding: 10px 16px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .twin-input:focus { border-color: #667eea; }
+        .twin-send {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 42px; height: 42px;
+            cursor: pointer;
+            font-size: 18px;
+            flex: 0 0 auto;
+            transition: transform 0.2s;
+        }
+        .twin-send:hover { transform: scale(1.08); }
+
+        @media (max-width: 600px) {
+            .twin-panel { left: 10px; width: calc(100vw - 20px); height: 70vh; }
+            .twin-fab { left: 16px; bottom: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== Hero 全屏区域 ===== -->
+    <section class="hero" id="hero" title="点击查看大图">
+        <video class="bg-video" autoplay muted loop playsinline>
+            <source src="bg-video.mp4" type="video/mp4">
+        </video>
+        <div class="zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zM12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/></svg>
+            点击放大
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-name">刘子铖</h1>
+                <p class="hero-title">深圳未来技术学院 · 智能医学工程 · 大一</p>
+                <div class="hero-location">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <span>广东 · 广州</span>
+                </div>
+            </div>
+            <div class="avatar-box">
+                <img src="https://aka.doubaocdn.com/s/990MdVKkmu" alt="刘子铖的头像">
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <span>SCROLL</span>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ===== 内容区域 ===== -->
+    <div class="side-bg"></div>
+    <main class="content">
+        <button class="feedback-entry-btn" id="feedbackEntryBtn">💬 反馈</button>
+        <nav class="top-nav">
+            <a href="index.html" class="active">主页</a>
+            <a href="youth.html">我的青春</a>
+        </nav>
+        <!-- 关于我 -->
+        <section class="card">
+            <h2 class="card-title">
+                <span class="icon icon-about">👤</span>
+                关于我
+            </h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">学校</div>
+                    <div class="info-value">深圳未来技术学院</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">专业</div>
+                    <div class="info-value">智能医学工程</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">年级</div>
+                    <div class="info-value">大一 <small>Freshman</small></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">所在地</div>
+                    <div class="info-value">广东 · 广州</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 兴趣爱好 -->
+        <section class="card">
+            <h2 class="card-title">
+                <span class="icon icon-hobby">🎯</span>
+                兴趣爱好
+            </h2>
+            <div class="hobby-tags">
+                <span class="hobby-tag" id="musicTag"><span class="emoji">🎵</span>听歌</span>
+                <span class="hobby-tag" id="foodTag"><span class="emoji">🍜</span>美食</span>
+                <span class="hobby-tag" id="footballTag"><span class="emoji">⚽</span>足球</span>
+                <span class="hobby-tag" id="gameTag"><span class="emoji">🎮</span>打游戏</span>
+            </div>
+        </section>
+
+        <!-- 我的足迹（入口卡片） -->
+        <section class="card travel-entry-card" id="travelEntryCard">
+            <h2 class="card-title" style="cursor:pointer; text-align:center; padding:20px 0;">
+                <span class="icon icon-travel">✈️</span>
+                我的足迹
+            </h2>
+        </section>
+
+        <!-- 足迹页面（城市列表） -->
+        <div class="travel-page" id="travelPage">
+            <div class="travel-page-header">
+                <button class="travel-page-back" id="travelPageBack">← 返回</button>
+                <h2 class="travel-page-title">✈️ 我的足迹</h2>
+                <div style="width:60px;"></div>
+            </div>
+            <div class="travel-grid" id="travelGrid">
+                <!-- 城市卡片由JavaScript生成 -->
+            </div>
+        </div>
+
+        <!-- 城市照片轮播页面（自动播放+音乐） -->
+        <div class="city-slide-page" id="citySlidePage">
+            <button class="city-slide-back" id="citySlideBack">← 返回城市列表</button>
+            <div class="city-slide-info">
+                <div class="city-slide-name" id="citySlideName">城市名</div>
+                <div class="city-slide-country" id="citySlideCountry">国家</div>
+            </div>
+            <div class="city-slide-image-container">
+                <div class="city-slide-track" id="citySlideTrack"></div>
+                <div class="city-slide-counter" id="citySlideCounter">1 / 5</div>
+            </div>
+            <div class="city-slide-nav">
+                <button class="city-slide-prev" id="citySlidePrev">‹</button>
+                <button class="city-slide-next" id="citySlideNext">›</button>
+            </div>
+            <div class="city-slide-dots" id="citySlideDots"></div>
+        </div>
+
+        <!-- 联系方式 -->
+        <section class="card">
+            <h2 class="card-title">
+                <span class="icon icon-contact">📬</span>
+                联系我
+            </h2>
+            <a href="mailto:dodo130305@outlook.com" class="contact-item">
+                <div class="contact-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-label">邮箱</div>
+                    <div class="contact-value">dodo130305@outlook.com</div>
+                </div>
+                <span class="contact-arrow">›</span>
+            </a>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="version">V1.4 · 2026.09</div>
+        <p>© 2026 刘子铖 · 如有需求可通过邮箱联系</p>
+    </footer>
+
+    <!-- ===== Lightbox 放大预览 ===== -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close" id="lightboxClose">×</div>
+        <video class="lightbox-video" id="lightboxVideo" autoplay muted loop playsinline>
+            <source src="bg-video.mp4" type="video/mp4">
+        </video>
+        <div class="lightbox-hint">点击任意处关闭</div>
+    </div>
+
+    <!-- ===== 歌曲列表弹窗 ===== -->
+    <div class="music-modal" id="musicModal">
+        <div class="music-modal-content">
+            <button class="music-modal-close" id="musicModalClose">×</button>
+            <div class="music-modal-title">🎵 我的歌单</div>
+            <div class="music-modal-subtitle">点击歌曲直接播放</div>
+            <div class="music-list" id="musicList">
+                <!-- 歌曲列表由JavaScript生成 -->
+            </div>
+
+            <!-- 内置播放器 -->
+            <div class="player-bar" id="playerBar" style="display: none;">
+                <div class="player-info">
+                    <div class="player-cover" id="playerCover">🎵</div>
+                    <div class="player-song-info">
+                        <div class="player-song-name" id="playerSongName">未播放</div>
+                        <div class="player-song-artist" id="playerSongArtist">-</div>
+                    </div>
+                </div>
+                <div class="player-controls">
+                    <button class="player-btn" id="prevBtn" title="上一首">⏮</button>
+                    <button class="player-btn play-btn" id="playBtn" title="播放/暂停">▶</button>
+                    <button class="player-btn" id="nextBtn" title="下一首">⏭</button>
+                    <div class="player-progress" id="progressBar">
+                        <div class="player-progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="player-time" id="playerTime">0:00 / 0:00</div>
+                </div>
+                <div class="player-volume">
+                    <span class="player-volume-icon" id="volumeIcon">🔊</span>
+                    <div class="player-volume-slider" id="volumeSlider">
+                        <div class="player-volume-fill" id="volumeFill"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="player-hint">💡 MP3 文件需与代码中文件名一致，Die For You 请命名为 song6.mp3</div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <!-- ===== 游戏视频弹窗 ===== -->
+    <div class="game-modal" id="gameModal">
+        <div class="game-modal-content">
+            <div class="game-modal-header">
+                <div class="game-modal-title">🎮 游戏时刻</div>
+                <button class="game-modal-close" id="gameModalClose">×</button>
+            </div>
+            <div class="game-videos-wrapper">
+                <div class="game-video-item">
+                    <div class="game-video-label">视频 1</div>
+                    <div class="game-video-container">
+                        <video class="game-video" id="gameVideo1" controls playsinline>
+                            <source src="game-video.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放
+                        </video>
+                    </div>
+                </div>
+                <div class="game-video-item">
+                    <div class="game-video-label">视频 2</div>
+                    <div class="game-video-container">
+                        <video class="game-video" id="gameVideo2" controls playsinline>
+                            <source src="game-video2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 足球图片弹窗（轮播） ===== -->
+    <div class="football-modal" id="footballModal">
+        <div class="football-modal-content">
+            <audio id="footballAudio" loop preload="none">
+                <source src="football-music.mp3" type="audio/mpeg">
+            </audio>
+            <button class="football-modal-close" id="footballModalClose">×</button>
+            <div class="football-counter" id="footballCounter">1 / 9</div>
+            <div class="football-carousel" id="footballCarousel">
+                <!-- 第1张：原图带文字 -->
+                <div class="football-slide active">
+                    <img src="football-bg.jpg" alt="老特拉福德" style="object-fit: cover; width: 100%; height: 100%;">
+                    <div class="football-slide-overlay">
+                        <div class="football-slide-text">在老特拉福德<br>你可以永远相信奇迹</div>
+                    </div>
+                </div>
+                <!-- 第2-9张：新图片 -->
+                <div class="football-slide"><img src="football-1.jpg" alt="足球照片1" style="object-fit: cover; width: 100%; height: 100%;"></div>
+                <div class="football-slide"><img src="football-2.jpg" alt="足球照片2" style="object-fit: cover; width: 100%; height: 100%;"></div>
+                <div class="football-slide"><img src="football-3.jpg" alt="足球照片3" style="object-fit: cover; width: 100%; height: 100%;"></div>
+                <div class="football-slide"><img src="football-4.jpg" alt="足球照片4" style="object-fit: cover; width: 100%; height: 100%;"></div>
+                <div class="football-slide"><img src="football-5.jpg" alt="足球照片5" style="object-fit: cover; width: 100%; height: 100%;"></div>
+                <div class="football-slide"><img src="football-6.jpg" alt="足球照片6" style="object-fit: cover; width: 100%; height: 100%;"></div>
+                <div class="football-slide"><img src="football-7.jpg" alt="足球照片7" style="object-fit: cover; width: 100%; height: 100%;"></div>
+                <div class="football-slide"><img src="football-8.jpg" alt="足球照片8" style="object-fit: cover; width: 100%; height: 100%;"></div>
+            </div>
+            <button class="football-nav prev" id="footballPrev">‹</button>
+            <button class="football-nav next" id="footballNext">›</button>
+            <div class="football-dots" id="footballDots"></div>
+        </div>
+    </div>
+
+    <!-- ===== 美食弹窗 ===== -->
+    <div class="football-modal" id="foodModal">
+        <div class="football-modal-content food-modal-content">
+            <audio id="foodAudio" loop preload="none">
+                <source src="food-music.mp3" type="audio/mpeg">
+            </audio>
+            <button class="football-modal-close" id="foodModalClose">×</button>
+            <div class="football-counter" id="foodCounter">1 / 17</div>
+            <div class="football-carousel" id="foodCarousel">
+                <div class="football-slide active">
+                    <img src="food-1.jpg" alt="港理工专属—港式广州早茶">
+                    <div class="food-caption">港理工专属—港式广州早茶</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-2.jpg" alt="虾仁蛋包饭">
+                    <div class="food-caption">虾仁蛋包饭 · 食堂里的小确幸</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-3.jpg" alt="喜茶">
+                    <div class="food-caption">喜茶永远的神</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-4.jpg" alt="桑拿鸡">
+                    <div class="food-caption">超级无敌好吃的桑拿鸡</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-5.jpg" alt="广式烧腊">
+                    <div class="food-caption">广式烧腊 · 白饭杀手</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-6.jpg" alt="鱼生">
+                    <div class="food-caption">口味独特的鱼生</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-7.jpg" alt="三文鱼甜虾">
+                    <div class="food-caption">三文鱼甜虾脑袋</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-17.jpg" alt="鳌虾">
+                    <div class="food-caption">鳌虾真的好难剥</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-8.jpg" alt="樱桃鹅肝">
+                    <div class="food-caption">樱桃鹅肝 · 颜值与美味并存</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-9.jpg" alt="豆汁">
+                    <div class="food-caption">来北京必喝的灵魂豆汁</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-10.jpg" alt="李若桃">
+                    <div class="food-caption">李若桃真的夯爆了</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-11.jpg" alt="自制汉堡">
+                    <div class="food-caption">自制牛肉培根汉堡 · 手作的快乐</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-12.jpg" alt="碰一个">
+                    <div class="food-caption">碰一个</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-13.jpg" alt="利川红茶">
+                    <div class="food-caption">茶颜：利川红茶</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-14.jpg" alt="糖醋排骨">
+                    <div class="food-caption">糖醋排骨 · 家常菜的灵魂</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-15.jpg" alt="三菜一饭">
+                    <div class="food-caption">三菜一饭 · 周末的厨房时光</div>
+                </div>
+                <div class="football-slide">
+                    <img src="food-16.jpg" alt="芝士焗红薯">
+                    <div class="food-caption">芝士焗红薯 · 拉丝的快乐</div>
+                </div>
+            </div>
+            <button class="football-nav prev" id="foodPrev">‹</button>
+            <button class="football-nav next" id="foodNext">›</button>
+            <div class="football-dots" id="foodDots"></div>
+        </div>
+    </div>
+
+    <!-- ===== 反馈弹窗 ===== -->
+    <div class="feedback-modal" id="feedbackModal">
+        <div class="feedback-modal-content">
+            <div class="feedback-modal-header">
+                <div class="feedback-modal-title">💬 反馈</div>
+                <button class="feedback-modal-close" id="feedbackModalClose">×</button>
+            </div>
+            <div class="feedback-modal-body">
+                <!-- 提交表单 -->
+                <div id="feedbackFormSection">
+                    <div style="background:#f0f7ff; padding:10px 14px; border-radius:8px; margin-bottom:16px; font-size:13px; color:#666;">
+                        🔒 反馈不会公开，只有我能看到
+                    </div>
+                    <div class="feedback-form-group">
+                        <label class="feedback-form-label">昵称 <span style="font-weight:400; color:#999; font-size:12px;">（可选填）</span></label>
+                        <input type="text" class="feedback-form-input" id="feedbackNickname" placeholder="你的昵称，不填就是匿名" maxlength="20">
+                    </div>
+                    <div class="feedback-form-group">
+                        <label class="feedback-form-label">关系</label>
+                        <div class="relation-buttons" id="relationButtons">
+                            <button class="relation-btn" data-relation="同学">同学</button>
+                            <button class="relation-btn" data-relation="朋友">朋友</button>
+                            <button class="relation-btn" data-relation="家人">家人</button>
+                            <button class="relation-btn" data-relation="其他">其他</button>
+                        </div>
+                    </div>
+                    <div class="feedback-form-group">
+                        <label class="feedback-form-label">反馈内容 <span style="color:#ff69b4;">*</span></label>
+                        <textarea class="feedback-form-textarea" id="feedbackContent" placeholder="比如：某个按钮不好找 / 某段文字看不懂 / 某个页面不方便...&#10;随便写什么都可以～" maxlength="500"></textarea>
+                    </div>
+                    <button class="feedback-form-submit" id="feedbackSubmitBtn">提交反馈</button>
+                </div>
+
+                <!-- 提交成功 -->
+                <div id="feedbackSuccessSection" style="display:none;">
+                    <div class="feedback-success">
+                        <div class="feedback-success-icon">✅</div>
+                        <div style="font-size:18px; font-weight:600; margin-bottom:8px;">提交成功！</div>
+                        <div style="color:#999; font-size:14px;">感谢你的反馈～</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hero = document.getElementById('hero');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxVideo = document.getElementById('lightboxVideo');
+
+        hero.addEventListener('click', function() {
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            lightboxVideo.play();
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        lightbox.addEventListener('click', closeLightbox);
+        lightboxClose.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeLightbox();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+
+        // ===== 歌曲列表弹窗 + 内置播放器 =====
+        const musicTag = document.getElementById('musicTag');
+        const musicModal = document.getElementById('musicModal');
+        const musicModalClose = document.getElementById('musicModalClose');
+        const musicList = document.getElementById('musicList');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playerBar = document.getElementById('playerBar');
+        const playerCover = document.getElementById('playerCover');
+        const playerSongName = document.getElementById('playerSongName');
+        const playerSongArtist = document.getElementById('playerSongArtist');
+        const playBtn = document.getElementById('playBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const playerTime = document.getElementById('playerTime');
+        const volumeIcon = document.getElementById('volumeIcon');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeFill = document.getElementById('volumeFill');
+
+        // 歌曲列表（file 为本地 MP3 文件名，放入同文件夹即可播放）
+        const songs = [
+            { name: '烟花易冷', artist: '周杰伦', file: '周杰伦-烟花易冷.mp3' },
+            { name: '爱错', artist: '王力宏', file: '王力宏-爱错.mp3' },
+            { name: '普通朋友', artist: '陶喆', file: '陶喆+-+普通朋友.mp3' },
+            { name: '梦幻诛仙', artist: '汪苏泷', file: '汪苏泷-梦幻诛仙.mp3' },
+            { name: '天龙八部之宿敌', artist: '许嵩', file: '许嵩+-+天龙八部之宿敌.mp3' },
+            { name: 'Die For You', artist: 'The Weeknd', file: 'song6.mp3' },
+            { name: '下完这场雨', artist: '后弦', file: '后弦+-+下完这场雨.mp3' },
+            { name: '那时雨', artist: '徐良', file: '徐良-那时雨.mp3' },
+        ];
+
+        let currentIndex = -1;
+        let isPlaying = false;
+
+        // 生成歌曲列表
+        songs.forEach((song, index) => {
+            const item = document.createElement('div');
+            item.className = 'music-item';
+            item.dataset.index = index;
+            item.innerHTML = `
+                <div class="music-item-index">${index + 1}</div>
+                <div class="music-item-info">
+                    <div class="music-item-name">${song.name}</div>
+                    <div class="music-item-artist">${song.artist}</div>
+                </div>
+                <div class="music-item-play">▶</div>
+            `;
+            item.addEventListener('click', function() {
+                playSong(index);
+            });
+            musicList.appendChild(item);
+        });
+
+        // 播放指定歌曲
+        function playSong(index) {
+            if (index < 0 || index >= songs.length) return;
+            currentIndex = index;
+            const song = songs[index];
+            audioPlayer.src = song.file;
+            audioPlayer.play().then(() => {
+                isPlaying = true;
+                playBtn.textContent = '⏸';
+                playerBar.style.display = 'block';
+                playerSongName.textContent = song.name;
+                playerSongArtist.textContent = song.artist;
+                updateSongListHighlight();
+            }).catch(() => {
+                // 文件不存在时提示
+                playerBar.style.display = 'block';
+                playerSongName.textContent = song.name + '（未找到文件）';
+                playerSongArtist.textContent = '请将 ' + song.file + ' 放入同文件夹';
+                playBtn.textContent = '▶';
+                isPlaying = false;
+            });
+        }
+
+        // 更新歌曲列表高亮
+        function updateSongListHighlight() {
+            document.querySelectorAll('.music-item').forEach((item, i) => {
+                if (i === currentIndex) {
+                    item.style.borderColor = 'rgba(255, 105, 180, 0.6)';
+                    item.style.background = 'linear-gradient(135deg, #ffeef2, #ffd9e3)';
+                } else {
+                    item.style.borderColor = '';
+                    item.style.background = '';
+                }
+            });
+        }
+
+        // 播放/暂停
+        playBtn.addEventListener('click', function() {
+            if (currentIndex === -1) {
+                playSong(0);
+                return;
+            }
+            if (isPlaying) {
+                audioPlayer.pause();
+                playBtn.textContent = '▶';
+                isPlaying = false;
+            } else {
+                audioPlayer.play();
+                playBtn.textContent = '⏸';
+                isPlaying = true;
+            }
+        });
+
+        // 上一首
+        prevBtn.addEventListener('click', function() {
+            let newIndex = currentIndex - 1;
+            if (newIndex < 0) newIndex = songs.length - 1;
+            playSong(newIndex);
+        });
+
+        // 下一首
+        nextBtn.addEventListener('click', function() {
+            let newIndex = currentIndex + 1;
+            if (newIndex >= songs.length) newIndex = 0;
+            playSong(newIndex);
+        });
+
+        // 自动播放下一首
+        audioPlayer.addEventListener('ended', function() {
+            let newIndex = currentIndex + 1;
+            if (newIndex >= songs.length) newIndex = 0;
+            playSong(newIndex);
+        });
+
+        // 格式化时间
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return min + ':' + (sec < 10 ? '0' : '') + sec;
+        }
+
+        // 更新进度条
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (audioPlayer.duration) {
+                const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progressFill.style.width = percent + '%';
+                playerTime.textContent = formatTime(audioPlayer.currentTime) + ' / ' + formatTime(audioPlayer.duration);
+            }
+        });
+
+        // 点击进度条跳转
+        progressBar.addEventListener('click', function(e) {
+            if (!audioPlayer.duration) return;
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        });
+
+        // 音量控制
+        audioPlayer.volume = 0.7;
+
+        volumeSlider.addEventListener('click', function(e) {
+            const rect = volumeSlider.getBoundingClientRect();
+            const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            audioPlayer.volume = percent;
+            volumeFill.style.width = (percent * 100) + '%';
+            volumeIcon.textContent = percent === 0 ? '🔇' : (percent < 0.5 ? '🔉' : '🔊');
+        });
+
+        volumeIcon.addEventListener('click', function() {
+            if (audioPlayer.volume > 0) {
+                audioPlayer.dataset.prevVolume = audioPlayer.volume;
+                audioPlayer.volume = 0;
+                volumeFill.style.width = '0%';
+                volumeIcon.textContent = '🔇';
+            } else {
+                audioPlayer.volume = audioPlayer.dataset.prevVolume || 0.7;
+                volumeFill.style.width = (audioPlayer.volume * 100) + '%';
+                volumeIcon.textContent = '🔊';
+            }
+        });
+
+        // 打开弹窗
+        musicTag.addEventListener('click', function() {
+            musicModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // 关闭弹窗
+        function closeMusicModal() {
+            musicModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        musicModalClose.addEventListener('click', closeMusicModal);
+        musicModal.addEventListener('click', function(e) {
+            if (e.target === musicModal) {
+                closeMusicModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && musicModal.classList.contains('active')) {
+                closeMusicModal();
+            }
+            // 空格键播放/暂停
+            if (e.key === ' ' && musicModal.classList.contains('active')) {
+                e.preventDefault();
+                playBtn.click();
+            }
+        });
+
+        // ===== 游戏视频弹窗 =====
+        const gameTag = document.getElementById('gameTag');
+        const gameModal = document.getElementById('gameModal');
+        const gameModalClose = document.getElementById('gameModalClose');
+        const gameVideo1 = document.getElementById('gameVideo1');
+        const gameVideo2 = document.getElementById('gameVideo2');
+
+        // 点击打游戏标签打开视频弹窗
+        gameTag.addEventListener('click', function() {
+            gameModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // 关闭视频弹窗（暂停所有视频）
+        function closeGameModal() {
+            gameModal.classList.remove('active');
+            document.body.style.overflow = '';
+            gameVideo1.pause();
+            gameVideo2.pause();
+        }
+
+        gameModalClose.addEventListener('click', closeGameModal);
+        gameModal.addEventListener('click', function(e) {
+            if (e.target === gameModal) {
+                closeGameModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && gameModal.classList.contains('active')) {
+                closeGameModal();
+            }
+        });
+
+        // ===== 足球图片弹窗（轮播） =====
+        const footballTag = document.getElementById('footballTag');
+        const footballModal = document.getElementById('footballModal');
+        const footballModalClose = document.getElementById('footballModalClose');
+        const footballSlides = document.querySelectorAll('#footballCarousel .football-slide');
+        const footballDots = document.getElementById('footballDots');
+        const footballCounter = document.getElementById('footballCounter');
+        const footballPrev = document.getElementById('footballPrev');
+        const footballNext = document.getElementById('footballNext');
+        let footballCurrent = 0;
+        const footballTotal = footballSlides.length;
+
+        // 生成底部指示器
+        for (let i = 0; i < footballTotal; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'football-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', function() {
+                footballGoTo(i);
+            });
+            footballDots.appendChild(dot);
+        }
+
+        // 切换到指定图片
+        let footballPrevIndex = 0;
+        function footballGoTo(index) {
+            const newIndex = (index + footballTotal) % footballTotal;
+            const direction = (newIndex === (footballCurrent + 1) % footballTotal) ? 1 : -1;
+
+            footballSlides.forEach(function(slide, i) {
+                slide.classList.remove('active', 'prev');
+                if (i === newIndex) {
+                    slide.classList.add('active');
+                } else if (direction === 1) {
+                    // 前进：旧图滑向左边
+                    if (i === footballCurrent) slide.classList.add('prev');
+                    else slide.style.transform = '';
+                } else {
+                    // 后退：旧图滑向右边
+                    if (i === footballCurrent) {
+                        slide.style.transform = 'translateX(100%)';
+                    }
+                }
+            });
+
+            footballCurrent = newIndex;
+            Array.from(footballDots.children).forEach(function(d, i) {
+                d.classList.toggle('active', i === footballCurrent);
+            });
+            footballCounter.textContent = (footballCurrent + 1) + ' / ' + footballTotal;
+        }
+
+        // 上一张/下一张
+        footballPrev.addEventListener('click', function(e) {
+            e.stopPropagation();
+            footballGoTo(footballCurrent - 1);
+        });
+        footballNext.addEventListener('click', function(e) {
+            e.stopPropagation();
+            footballGoTo(footballCurrent + 1);
+        });
+
+        const footballAudio = document.getElementById('footballAudio');
+
+        footballTag.addEventListener('click', function() {
+            footballModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            footballAudio.currentTime = 0;
+            footballAudio.play().catch(function(){});
+        });
+
+        function closeFootballModal() {
+            footballModal.classList.remove('active');
+            document.body.style.overflow = '';
+            footballAudio.pause();
+            footballAudio.currentTime = 0;
+        }
+
+        footballModalClose.addEventListener('click', closeFootballModal);
+        footballModal.addEventListener('click', function(e) {
+            if (e.target === footballModal) {
+                closeFootballModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && footballModal.classList.contains('active')) {
+                closeFootballModal();
+            }
+            // 左右键切换图片
+            if (footballModal.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') footballGoTo(footballCurrent - 1);
+                if (e.key === 'ArrowRight') footballGoTo(footballCurrent + 1);
+            }
+        });
+
+        // ===== 美食弹窗 =====
+        const foodTag = document.getElementById('foodTag');
+        const foodModal = document.getElementById('foodModal');
+        const foodModalClose = document.getElementById('foodModalClose');
+        const foodSlides = foodModal.querySelectorAll('.football-slide');
+        const foodPrev = document.getElementById('foodPrev');
+        const foodNext = document.getElementById('foodNext');
+        const foodDots = document.getElementById('foodDots');
+        const foodCounter = document.getElementById('foodCounter');
+        let foodCurrent = 0;
+        const foodTotal = foodSlides.length;
+
+        // 生成dots
+        foodSlides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'football-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', function(e) {
+                e.stopPropagation();
+                foodGoTo(i);
+            });
+            foodDots.appendChild(dot);
+        });
+
+        function foodGoTo(index) {
+            const newIndex = (index + foodTotal) % foodTotal;
+            const direction = (newIndex === (foodCurrent + 1) % foodTotal) ? 1 : -1;
+
+            foodSlides.forEach(function(slide, i) {
+                slide.classList.remove('active', 'prev');
+                slide.style.transform = '';
+                if (i === newIndex) {
+                    slide.classList.add('active');
+                } else if (direction === 1 && i === foodCurrent) {
+                    slide.classList.add('prev');
+                } else if (direction === -1 && i === foodCurrent) {
+                    slide.style.transform = 'translateX(100%)';
+                }
+            });
+
+            foodCurrent = newIndex;
+            Array.from(foodDots.children).forEach(function(d, i) {
+                d.classList.toggle('active', i === foodCurrent);
+            });
+            foodCounter.textContent = (foodCurrent + 1) + ' / ' + foodTotal;
+        }
+
+        foodPrev.addEventListener('click', function(e) {
+            e.stopPropagation();
+            foodGoTo(foodCurrent - 1);
+        });
+        foodNext.addEventListener('click', function(e) {
+            e.stopPropagation();
+            foodGoTo(foodCurrent + 1);
+        });
+
+        const foodAudio = document.getElementById('foodAudio');
+
+        foodTag.addEventListener('click', function() {
+            foodModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            foodAudio.currentTime = 0;
+            foodAudio.play().catch(function(){});
+        });
+
+        function closeFoodModal() {
+            foodModal.classList.remove('active');
+            document.body.style.overflow = '';
+            foodAudio.pause();
+            foodAudio.currentTime = 0;
+        }
+
+        foodModalClose.addEventListener('click', closeFoodModal);
+        foodModal.addEventListener('click', function(e) {
+            if (e.target === foodModal) {
+                closeFoodModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && foodModal.classList.contains('active')) {
+                closeFoodModal();
+            }
+            if (foodModal.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') foodGoTo(foodCurrent - 1);
+                if (e.key === 'ArrowRight') foodGoTo(foodCurrent + 1);
+            }
+        });
+
+        // ===== 我的足迹（新版：页面跳转 + 自动轮播 + 音乐） =====
+        const travelEntryCard = document.getElementById('travelEntryCard');
+        const travelPage = document.getElementById('travelPage');
+        const travelPageBack = document.getElementById('travelPageBack');
+        const travelGrid = document.getElementById('travelGrid');
+        const citySlidePage = document.getElementById('citySlidePage');
+        const citySlideBack = document.getElementById('citySlideBack');
+        const citySlideName = document.getElementById('citySlideName');
+        const citySlideCountry = document.getElementById('citySlideCountry');
+        const citySlideTrack = document.getElementById('citySlideTrack');
+        const citySlideCounter = document.getElementById('citySlideCounter');
+        const citySlidePrev = document.getElementById('citySlidePrev');
+        const citySlideNext = document.getElementById('citySlideNext');
+        const citySlideDots = document.getElementById('citySlideDots');
+
+        // 城市数据（含背景音乐）
+        const cities = [
+            {
+                name: '北京',
+                country: '中国',
+                cover: 'beijing-1.jpg',
+                music: '周杰伦-烟花易冷.mp3',
+                photos: [
+                    'beijing-1.jpg', 'beijing-2.jpg', 'beijing-3.jpg', 'beijing-4.jpg',
+                    'beijing-5.jpg', 'beijing-6.jpg', 'beijing-7.jpg', 'beijing-8.jpg',
+                    'beijing-9.jpg', 'beijing-10.jpg', 'beijing-11.jpg', 'beijing-12.jpg',
+                    'beijing-13.jpg', 'beijing-14.jpg', 'beijing-15.jpg', 'beijing-16.jpg',
+                    'beijing-17.jpg', 'beijing-18.jpg', 'beijing-19.jpg', 'beijing-20.jpg',
+                ]
+            },
+            {
+                name: '阿姆斯特丹',
+                country: '荷兰',
+                cover: 'amsterdam-1.jpg',
+                music: 'song6.mp3',
+                photos: [
+                    'amsterdam-1.jpg', 'amsterdam-2.jpg', 'amsterdam-3.jpg', 'amsterdam-4.jpg',
+                ]
+            },
+            {
+                name: '英国',
+                country: '伦敦 · 英国',
+                cover: 'uk-1.jpg',
+                music: 'song6.mp3',
+                photos: [
+                    'uk-1.jpg', 'uk-2.jpg', 'uk-3.jpg', 'uk-4.jpg',
+                ]
+            },
+            {
+                name: '拉萨',
+                country: '西藏 · 中国',
+                cover: 'lhasa-1.jpg',
+                music: '许嵩-天龙八部之宿敌.mp3',
+                photos: [
+                    'lhasa-1.jpg', 'lhasa-2.jpg',
+                ]
+            },
+            {
+                name: '迪拜',
+                country: '阿联酋',
+                cover: 'dubai-1.jpg',
+                music: '汪苏泷-梦幻诛仙.mp3',
+                photos: [
+                    'dubai-1.jpg', 'dubai-2.jpg', 'dubai-3.jpg',
+                ]
+            },
+            {
+                name: '哈萨克斯坦',
+                country: '中亚',
+                cover: 'kazakhstan-1.jpg',
+                music: '陶喆-普通朋友.mp3',
+                photos: [
+                    'kazakhstan-1.jpg', 'kazakhstan-2.jpg', 'kazakhstan-3.jpg',
+                ]
+            },
+            {
+                name: '印度',
+                country: '南亚',
+                cover: 'india-1.jpg',
+                music: '王力宏-爱错.mp3',
+                photos: [
+                    'india-1.jpg', 'india-2.jpg', 'india-3.jpg', 'india-4.jpg',
+                ]
+            },
+            {
+                name: '青岛',
+                country: '山东 · 中国',
+                cover: 'qingdao-1.jpg',
+                music: '后弦-下完这场雨.mp3',
+                photos: [
+                    'qingdao-1.jpg', 'qingdao-2.jpg', 'qingdao-3.jpg',
+                ]
+            },
+            {
+                name: '成都',
+                country: '四川 · 中国',
+                cover: 'chengdu-1.jpg',
+                music: '徐良-那时雨.mp3',
+                photos: [
+                    'chengdu-1.jpg', 'chengdu-2.jpg', 'chengdu-3.jpg', 'chengdu-4.jpg',
+                    'chengdu-5.jpg', 'chengdu-6.jpg', 'chengdu-7.jpg', 'chengdu-8.jpg',
+                    'chengdu-9.jpg', 'chengdu-10.jpg', 'chengdu-11.jpg', 'chengdu-12.jpg',
+                ]
+            },
+            {
+                name: '南阳',
+                country: '河南 · 中国',
+                cover: 'nanyang-1.jpg',
+                music: '周杰伦-烟花易冷.mp3',
+                photos: [
+                    'nanyang-1.jpg', 'nanyang-2.jpg', 'nanyang-3.jpg', 'nanyang-4.jpg',
+                ]
+            },
+        ];
+
+        // 轮播状态
+        let currentCityIndex = 0;
+        let currentPhotoIndex = 0;
+        let slideTimer = null;
+        const AUTO_PLAY_INTERVAL = 4000; // 4秒自动切换
+
+        // 生成城市卡片
+        cities.forEach((city, index) => {
+            const card = document.createElement('div');
+            card.className = 'travel-city';
+            card.style.backgroundImage = `url(${city.cover})`;
+            card.innerHTML = `
+                <div class="travel-city-overlay">
+                    <div class="travel-city-name">${city.name}</div>
+                    <div class="travel-city-country">${city.country}</div>
+                </div>
+            `;
+            card.addEventListener('click', function() {
+                openCitySlide(index);
+            });
+            travelGrid.appendChild(card);
+        });
+
+        // 足迹页面背景音乐
+        let trailAudio = null;
+        const TRAIL_MUSIC = '蔡健雅-晨间新闻.mp3';
+
+        function playTrailMusic() {
+            stopTrailMusic();
+            trailAudio = new Audio(TRAIL_MUSIC);
+            trailAudio.loop = true;
+            trailAudio.volume = 0.5;
+            trailAudio.play().catch(() => {
+                // 文件不存在或被浏览器阻止
+            });
+        }
+
+        function stopTrailMusic() {
+            if (trailAudio) {
+                trailAudio.pause();
+                trailAudio = null;
+            }
+        }
+
+        // 打开足迹页面
+        travelEntryCard.addEventListener('click', function() {
+            travelPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            playTrailMusic();
+        });
+
+        // 返回主页面
+        travelPageBack.addEventListener('click', function() {
+            travelPage.classList.remove('active');
+            document.body.style.overflow = '';
+            stopTrailMusic();
+        });
+
+        // 打开城市轮播
+        function openCitySlide(index) {
+            currentCityIndex = index;
+            currentPhotoIndex = 0;
+            const city = cities[index];
+
+            citySlideName.textContent = city.name;
+            citySlideCountry.textContent = city.country;
+
+            // 停止之前的定时器
+            stopAutoPlay();
+
+            // 生成所有照片到track
+            citySlideTrack.style.transition = 'none';
+            citySlideTrack.innerHTML = '';
+            city.photos.forEach(function(src) {
+                const wrap = document.createElement('div');
+                wrap.className = 'city-photo-wrap';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = city.name;
+                wrap.appendChild(img);
+                citySlideTrack.appendChild(wrap);
+            });
+            citySlideTrack.style.transform = 'translateX(0)';
+            citySlideTrack.offsetHeight;
+            citySlideTrack.style.transition = '';
+
+            // 生成指示器
+            citySlideDots.innerHTML = '';
+            city.photos.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'city-slide-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', function() {
+                    showPhoto(i);
+                    restartAutoPlay();
+                });
+                citySlideDots.appendChild(dot);
+            });
+
+            // 更新计数器
+            citySlideCounter.textContent = '1 / ' + city.photos.length;
+
+            // 打开页面
+            citySlidePage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // 开始自动播放
+            startAutoPlay();
+        }
+
+        // 显示指定照片（滑动模式）
+        function showPhoto(index) {
+            const city = cities[currentCityIndex];
+            currentPhotoIndex = index;
+            citySlideTrack.style.transform = 'translateX(-' + (index * 100) + '%)';
+            citySlideCounter.textContent = `${index + 1} / ${city.photos.length}`;
+
+            // 更新指示器
+            const dots = citySlideDots.children;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = 'city-slide-dot' + (i === index ? ' active' : '');
+            }
+        }
+
+        // 下一张
+        function nextPhoto() {
+            const city = cities[currentCityIndex];
+            const next = (currentPhotoIndex + 1) % city.photos.length;
+            showPhoto(next);
+        }
+
+        // 上一张
+        function prevPhoto() {
+            const city = cities[currentCityIndex];
+            const prev = (currentPhotoIndex - 1 + city.photos.length) % city.photos.length;
+            showPhoto(prev);
+        }
+
+        // 自动播放
+        function startAutoPlay() {
+            stopAutoPlay();
+            slideTimer = setInterval(nextPhoto, AUTO_PLAY_INTERVAL);
+        }
+
+        function stopAutoPlay() {
+            if (slideTimer) {
+                clearInterval(slideTimer);
+                slideTimer = null;
+            }
+        }
+
+        function restartAutoPlay() {
+            stopAutoPlay();
+            startAutoPlay();
+        }
+
+        // 左右切换
+        citySlideNext.addEventListener('click', function() {
+            nextPhoto();
+            restartAutoPlay();
+        });
+
+        citySlidePrev.addEventListener('click', function() {
+            prevPhoto();
+            restartAutoPlay();
+        });
+
+        // 返回城市列表
+        citySlideBack.addEventListener('click', function() {
+            stopAutoPlay();
+            citySlidePage.classList.remove('active');
+            document.body.style.overflow = 'hidden'; // 足迹页面还在
+        });
+
+        // 键盘左右切换
+        document.addEventListener('keydown', function(e) {
+            if (!citySlidePage.classList.contains('active')) return;
+            if (e.key === 'ArrowRight') {
+                nextPhoto();
+                restartAutoPlay();
+            } else if (e.key === 'ArrowLeft') {
+                prevPhoto();
+                restartAutoPlay();
+            } else if (e.key === 'Escape') {
+                citySlideBack.click();
+            }
+        });
+
+        // ===== 反馈功能 =====
+        const feedbackEntryBtn = document.getElementById('feedbackEntryBtn');
+        const feedbackModal = document.getElementById('feedbackModal');
+        const feedbackModalClose = document.getElementById('feedbackModalClose');
+        const feedbackFormSection = document.getElementById('feedbackFormSection');
+        const feedbackSuccessSection = document.getElementById('feedbackSuccessSection');
+        const feedbackNickname = document.getElementById('feedbackNickname');
+        const feedbackContent = document.getElementById('feedbackContent');
+        const feedbackSubmitBtn = document.getElementById('feedbackSubmitBtn');
+        const relationButtons = document.getElementById('relationButtons');
+
+        let selectedRelation = '同学';
+        const SITE_VERSION = 'V9.0';
+        
+        // Supabase 配置
+        const SUPABASE_URL = 'https://rfntqywvtvvbxwvzmowl.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_rPRiFMfry_qY4xfQun4efw_2eiFUg3U';
+        const SUPABASE_HEADERS = {
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY,
+            'Content-Type': 'application/json'
+        };
+
+        // 默认选中同学
+        relationButtons.querySelector('[data-relation="同学"]').classList.add('active');
+
+        // 打开反馈弹窗
+        feedbackEntryBtn.addEventListener('click', function() {
+            feedbackModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            feedbackFormSection.style.display = 'block';
+            feedbackSuccessSection.style.display = 'none';
+        });
+
+        // 关闭弹窗
+        feedbackModalClose.addEventListener('click', closeFeedbackModal);
+        feedbackModal.addEventListener('click', function(e) {
+            if (e.target === feedbackModal) closeFeedbackModal();
+        });
+
+        function closeFeedbackModal() {
+            feedbackModal.classList.remove('active');
+            document.body.style.overflow = '';
+            feedbackFormSection.style.display = 'block';
+            feedbackSuccessSection.style.display = 'none';
+        }
+
+        // 关系选择
+        relationButtons.addEventListener('click', function(e) {
+            if (e.target.classList.contains('relation-btn')) {
+                relationButtons.querySelectorAll('.relation-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                selectedRelation = e.target.dataset.relation;
+            }
+        });
+
+        // 提交反馈到Supabase
+        feedbackSubmitBtn.addEventListener('click', async function() {
+            const nickname = feedbackNickname.value.trim() || '匿名访客';
+            const content = feedbackContent.value.trim();
+
+            if (!content) {
+                alert('请填写反馈内容');
+                return;
+            }
+
+            const btn = feedbackSubmitBtn;
+            btn.disabled = true;
+            btn.textContent = '提交中...';
+
+            try {
+                const res = await fetch(SUPABASE_URL + '/rest/v1/feedback', {
+                    method: 'POST',
+                    headers: SUPABASE_HEADERS,
+                    body: JSON.stringify({
+                        nickname: nickname,
+                        relation: selectedRelation,
+                        content: content,
+                        version: SITE_VERSION
+                    })
+                });
+
+                if (!res.ok) throw new Error('提交失败');
+
+                // 显示成功
+                feedbackFormSection.style.display = 'none';
+                feedbackSuccessSection.style.display = 'block';
+
+                // 清空表单
+                feedbackNickname.value = '';
+                feedbackContent.value = '';
+            } catch (err) {
+                alert('提交失败，请稍后再试～');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '提交反馈';
+            }
+        });
+
+        // HTML转义
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ===== 互动桌宠 =====
+        function initDesktopPet() {
+            const pet = document.getElementById('desktopPet');
+            const speech = document.getElementById('petSpeech');
+            const reviveBtn = document.getElementById('petRevive');
+            const menu = document.getElementById('petMenu');
+            if (!pet) return;
+
+            // 状态
+            let state = {
+                interactionIndex: 0,
+                isDragging: false,
+                isWalking: false,
+                isSleeping: false,
+                isFollowing: false,
+                isTopmost: true,
+                size: 120,
+                walkTimer: null,
+                followTimer: null,
+                speechTimer: null,
+                idleTimer: null
+            };
+
+            // 语录库
+            const phrases = {
+                idle: ['你好呀～', '今天也要加油哦！', '陪我玩嘛～', '你在看什么呢？', '我超可爱的对吧！', '这里好热闹呀', '才不是小屁孩呢！', '哼，不理你了', '嘿嘿，抓到你了'],
+                jump: ['哇哦！飞起来啦！', '看我跳得高不高～', '蹦蹦跳跳真开心！'],
+                squash: ['哎呀！被压扁了！', '弹弹弹～', '好软呀嘿嘿'],
+                shake: ['呜呜别摇了！', '晕晕晕...', '啦啦啦晃悠悠～'],
+                pat: ['呜呜好舒服～', '再摸摸嘛～', '嘿嘿，最喜欢你了', '头顶暖暖的'],
+                feed: ['啊呜！好好吃！', '还要还要！', '吃饱啦好满足～', '这是什么呀？好吃！'],
+                chat: ['今天过得怎么样？', '跟我说说你的事嘛', '我在认真听哦', '然后呢然后呢？', '哇，好厉害！'],
+                walk: ['我去散步啦～', '走走走！', '这里看看那里看看', '散步有益健康！'],
+                sleep: ['晚安...Zzz', '好困呀...', '别吵我睡觉哦', '做个好梦...'],
+                follow: ['我跟着你！', '别走那么快嘛', '你去哪我去哪', '跟着你有好吃的吗？'],
+                drag: ['哇！带我飞！', '慢点慢点～', '好刺激呀！', '我在跑步哦！']
+            };
+
+            function getPhrase(type) {
+                const arr = phrases[type] || phrases.idle;
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            // 说话
+            function say(text) {
+                speech.textContent = text;
+                speech.classList.add('show');
+                if (state.speechTimer) clearTimeout(state.speechTimer);
+                state.speechTimer = setTimeout(() => {
+                    speech.classList.remove('show');
+                }, 2500);
+            }
+
+            // 播放动画
+            function playAnim(className, duration) {
+                pet.classList.remove('idle', 'jump', 'squash', 'shake');
+                pet.classList.add(className);
+                setTimeout(() => {
+                    pet.classList.remove(className);
+                    if (!state.isSleeping && !state.isWalking) {
+                        pet.classList.add('idle');
+                    }
+                }, duration);
+            }
+
+            // 轮流触发互动
+            function triggerInteraction() {
+                if (state.isSleeping) {
+                    say('嘘...我在睡觉呢');
+                    return;
+                }
+                const interactions = ['jump', 'squash', 'shake'];
+                const anim = interactions[state.interactionIndex % interactions.length];
+                state.interactionIndex++;
+                playAnim(anim, anim === 'jump' ? 600 : 500);
+                say(getPhrase(anim));
+            }
+
+            // 拖拽
+            let dragStartX = 0, dragStartY = 0, petStartLeft = 0, petStartTop = 0;
+            let hasMoved = false;
+
+            function startDrag(clientX, clientY) {
+                if (state.isSleeping) {
+                    state.isSleeping = false;
+                    pet.classList.remove('sleeping');
+                    say('嗯？醒啦！');
+                }
+                stopWalking();
+                stopFollowing();
+                hasMoved = false;
+                dragStartX = clientX;
+                dragStartY = clientY;
+                const rect = pet.getBoundingClientRect();
+                petStartLeft = rect.left;
+                petStartTop = rect.top;
+                pet.classList.add('dragging');
+                pet.classList.remove('idle');
+                pet.style.right = 'auto';
+                pet.style.bottom = 'auto';
+            }
+
+            function moveDrag(clientX, clientY) {
+                const dx = clientX - dragStartX;
+                const dy = clientY - dragStartY;
+                if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+                    hasMoved = true;
+                    if (!state.isDragging) {
+                        state.isDragging = true;
+                        say(getPhrase('drag'));
+                    }
+                }
+                pet.style.left = (petStartLeft + dx) + 'px';
+                pet.style.top = (petStartTop + dy) + 'px';
+            }
+
+            function endDrag() {
+                pet.classList.remove('dragging');
+                state.isDragging = false;
+                if (!state.isSleeping && !state.isWalking) {
+                    pet.classList.add('idle');
+                }
+                if (!hasMoved) {
+                    triggerInteraction();
+                }
+            }
+
+            pet.addEventListener('mousedown', function(e) {
+                if (e.button !== 0) return;
+                startDrag(e.clientX, e.clientY);
+                function onMove(ev) { moveDrag(ev.clientX, ev.clientY); }
+                function onUp() {
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onUp);
+                    endDrag();
+                }
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+                e.preventDefault();
+            });
+
+            // 触摸
+            pet.addEventListener('touchstart', function(e) {
+                const t = e.touches[0];
+                startDrag(t.clientX, t.clientY);
+                function onMove(ev) {
+                    const tt = ev.touches[0];
+                    moveDrag(tt.clientX, tt.clientY);
+                    ev.preventDefault();
+                }
+                function onEnd() {
+                    document.removeEventListener('touchmove', onMove);
+                    document.removeEventListener('touchend', onEnd);
+                    endDrag();
+                }
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', onEnd);
+            }, { passive: false });
+
+            // 滚轮调整大小
+            pet.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -10 : 10;
+                state.size = Math.max(60, Math.min(250, state.size + delta));
+                pet.style.width = state.size + 'px';
+                pet.style.height = (state.size * 1.08) + 'px';
+            }, { passive: false });
+
+            // 右键菜单
+            pet.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                showMenu(e.clientX, e.clientY);
+            });
+
+            function showMenu(x, y) {
+                menu.style.left = Math.min(x, window.innerWidth - 160) + 'px';
+                menu.style.top = Math.min(y, window.innerHeight - 320) + 'px';
+                menu.classList.add('show');
+            }
+
+            function hideMenu() {
+                menu.classList.remove('show');
+            }
+
+            document.addEventListener('click', function(e) {
+                if (!menu.contains(e.target) && e.target !== pet) {
+                    hideMenu();
+                }
+            });
+
+            // 菜单项
+            menu.querySelectorAll('.pet-menu-item').forEach(function(item) {
+                item.addEventListener('click', function() {
+                    const action = this.dataset.action;
+                    hideMenu();
+                    handleAction(action);
+                });
+            });
+
+            function handleAction(action) {
+                switch(action) {
+                    case 'chat':
+                        say(getPhrase('chat'));
+                        break;
+                    case 'pat':
+                        playAnim('squash', 500);
+                        say(getPhrase('pat'));
+                        break;
+                    case 'feed':
+                        playAnim('shake', 500);
+                        say(getPhrase('feed'));
+                        break;
+                    case 'walk':
+                        toggleWalk();
+                        break;
+                    case 'sleep':
+                        toggleSleep();
+                        break;
+                    case 'follow':
+                        toggleFollow();
+                        break;
+                    case 'resize':
+                        say('用滚轮调整我的大小哦～');
+                        break;
+                    case 'topmost':
+                        state.isTopmost = !state.isTopmost;
+                        pet.style.zIndex = state.isTopmost ? '2147483647' : '100';
+                        say(state.isTopmost ? '我在最上面啦！' : '好的，我让一让');
+                        break;
+                    case 'exit':
+                        exitPet();
+                        break;
+                }
+            }
+
+            // 走路
+            function toggleWalk() {
+                if (state.isWalking) {
+                    stopWalking();
+                    say('不走啦不走啦');
+                } else {
+                    startWalking();
+                }
+            }
+
+            function startWalking() {
+                state.isWalking = true;
+                state.isSleeping = false;
+                pet.classList.remove('sleeping', 'idle');
+                pet.classList.add('dragging');
+                say(getPhrase('walk'));
+                pet.style.right = 'auto';
+                pet.style.bottom = 'auto';
+                walkStep();
+            }
+
+            function walkStep() {
+                if (!state.isWalking) return;
+                const rect = pet.getBoundingClientRect();
+                const maxX = window.innerWidth - rect.width - 10;
+                const maxY = window.innerHeight - rect.height - 10;
+                const targetX = Math.random() * maxX;
+                const targetY = Math.random() * maxY;
+                const curX = rect.left;
+                const curY = rect.top;
+                const dist = Math.sqrt((targetX-curX)**2 + (targetY-curY)**2);
+                const steps = Math.max(10, Math.floor(dist / 5));
+                let step = 0;
+                const interval = setInterval(() => {
+                    if (!state.isWalking) { clearInterval(interval); return; }
+                    step++;
+                    const t = step / steps;
+                    pet.style.left = (curX + (targetX - curX) * t) + 'px';
+                    pet.style.top = (curY + (targetY - curY) * t) + 'px';
+                    if (step >= steps) {
+                        clearInterval(interval);
+                        setTimeout(walkStep, 500);
+                    }
+                }, 30);
+                state.walkTimer = interval;
+            }
+
+            function stopWalking() {
+                state.isWalking = false;
+                if (state.walkTimer) clearInterval(state.walkTimer);
+                pet.classList.remove('dragging');
+                if (!state.isSleeping) pet.classList.add('idle');
+            }
+
+            // 睡觉
+            function toggleSleep() {
+                if (state.isSleeping) {
+                    state.isSleeping = false;
+                    pet.classList.remove('sleeping');
+                    pet.classList.add('idle');
+                    say('啊！睡醒啦！');
+                } else {
+                    stopWalking();
+                    stopFollowing();
+                    state.isSleeping = true;
+                    pet.classList.remove('idle');
+                    pet.classList.add('sleeping');
+                    say(getPhrase('sleep'));
+                }
+            }
+
+            // 跟随鼠标
+            function toggleFollow() {
+                if (state.isFollowing) {
+                    stopFollowing();
+                    say('不跟啦不跟啦');
+                } else {
+                    startFollowing();
+                }
+            }
+
+            function startFollowing() {
+                state.isFollowing = true;
+                state.isSleeping = false;
+                pet.classList.remove('sleeping');
+                pet.classList.add('dragging');
+                say(getPhrase('follow'));
+                pet.style.right = 'auto';
+                pet.style.bottom = 'auto';
+                let targetX = 0, targetY = 0;
+                document.addEventListener('mousemove', onMouseMove);
+                function onMouseMove(e) {
+                    targetX = e.clientX;
+                    targetY = e.clientY;
+                }
+                function follow() {
+                    if (!state.isFollowing) return;
+                    const rect = pet.getBoundingClientRect();
+                    const curX = rect.left + rect.width / 2;
+                    const curY = rect.top + rect.height / 2;
+                    const dx = targetX - curX;
+                    const dy = targetY - curY;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist > 5) {
+                        const speed = Math.min(8, dist * 0.08);
+                        pet.style.left = (rect.left + dx / dist * speed) + 'px';
+                        pet.style.top = (rect.top + dy / dist * speed) + 'px';
+                    }
+                    state.followTimer = requestAnimationFrame(follow);
+                }
+                follow();
+                state._onMouseMove = onMouseMove;
+            }
+
+            function stopFollowing() {
+                state.isFollowing = false;
+                if (state.followTimer) cancelAnimationFrame(state.followTimer);
+                if (state._onMouseMove) document.removeEventListener('mousemove', state._onMouseMove);
+                pet.classList.remove('dragging');
+                if (!state.isSleeping && !state.isWalking) pet.classList.add('idle');
+            }
+
+            // 退出
+            function exitPet() {
+                say('再见啦～我会想你的！');
+                setTimeout(() => {
+                    pet.style.display = 'none';
+                    reviveBtn.style.display = 'flex';
+                    stopWalking();
+                    stopFollowing();
+                    if (state.idleTimer) clearInterval(state.idleTimer);
+                }, 1500);
+            }
+
+            // 召唤
+            reviveBtn.addEventListener('click', function() {
+                pet.style.display = 'block';
+                reviveBtn.style.display = 'none';
+                state.isSleeping = false;
+                pet.classList.add('idle');
+                say('我回来啦～想我了吗？');
+                startIdleTalk();
+            });
+
+            // 闲置说话
+            function startIdleTalk() {
+                if (state.idleTimer) clearInterval(state.idleTimer);
+                state.idleTimer = setInterval(() => {
+                    if (pet.style.display !== 'none' && !state.isSleeping && !state.isDragging && Math.random() < 0.25) {
+                        say(getPhrase('idle'));
+                    }
+                }, 10000);
+            }
+            startIdleTalk();
+
+            // 初始打招呼
+            setTimeout(() => {
+                say('你好呀，我是你的桌宠～右键我有更多功能哦！');
+            }, 1500);
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDesktopPet);
+        } else {
+            initDesktopPet();
+        }
+
+        // ===== 数字分身（离线问答） =====
+        function initDigitalTwin() {
+            const fab = document.getElementById('twinFab');
+            const panel = document.getElementById('twinPanel');
+            const closeBtn = document.getElementById('twinClose');
+            const messagesEl = document.getElementById('twinMessages');
+            const typingEl = document.getElementById('twinTyping');
+            const inputEl = document.getElementById('twinInput');
+            const sendBtn = document.getElementById('twinSend');
+            const quickEl = document.getElementById('twinQuick');
+            if (!fab || !panel) return;
+
+            // ===== 知识库：关键词 -> 回答 =====
+            // 每条：keywords 命中任一即触发；answers 随机选一条
+            const KB = [
+                {
+                    k: ['你好','您好','hi','hello','嗨','在吗','在么','哈喽'],
+                    a: ['你好呀！我是数字刘子铖，有什么想了解的尽管问～','嗨！很高兴见到你，想知道关于我的什么？','你好你好！我随时在线，问我点什么吧～']
+                },
+                {
+                    k: ['你是谁','叫什么','名字','你叫','怎么称呼','介绍一下你','自我介绍'],
+                    a: ['我是刘子铖的数字分身，知道关于他的一切～他本人是深圳未来技术学院的大一学生。','我叫刘子铖，广东广州人，现在在深圳读大学。这个页面上的信息我基本都能答上来！']
+                },
+                {
+                    k: ['哪个学校','什么学校','哪个大学','哪所大学','学校','大学','学院'],
+                    a: ['我在深圳未来技术学院读书，是一所很新、很有未来感的学校～','深圳未来技术学院！虽然建校时间不长，但平台和资源都不错。']
+                },
+                {
+                    k: ['什么专业','哪个专业','学什么','专业','智能医学','医学工程'],
+                    a: ['我学的是智能医学工程，简单说就是把人工智能和医学结合起来，挺前沿的交叉学科。','智能医学工程——一边学工科/AI，一边学医学基础，未来可以做医疗AI、智能诊疗设备这些方向。']
+                },
+                {
+                    k: ['几年级','大几','年级','大一','新生','freshman'],
+                    a: ['我现在是大一，妥妥的新生一枚～','大一 Freshman！大学生活才刚刚开始。']
+                },
+                {
+                    k: ['哪里人','哪的人','老家','家乡','哪里的','广州','广东人'],
+                    a: ['我是广东广州人，不过现在在深圳上学，两个城市离得很近。','老家在广州，讲粤语，也特别懂吃～现在在深圳读书。']
+                },
+                {
+                    k: ['在哪上学','在哪个城市','深圳','住在'],
+                    a: ['上学在深圳，深圳未来技术学院。老家是广州。','现在在深圳读书，一线城市节奏快、机会多。']
+                },
+                {
+                    k: ['邮箱','邮件','联系你','怎么联系','email','联系方式','微信'],
+                    a: ['可以发邮件联系我：dodo130305@outlook.com，有需求随时写～','我的邮箱是 dodo130305@outlook.com，欢迎来信！']
+                },
+                {
+                    k: ['兴趣','爱好','平时干嘛','喜欢做什么','课余','特长'],
+                    a: ['我主要有四大爱好：听歌、美食、足球、打游戏。页面上都能点进去看！','平时就听听歌、踢踢球、打打游戏，还到处找好吃的，标准的大学生生活哈哈。']
+                },
+                {
+                    k: ['听歌','音乐','什么歌','喜欢的歌','歌手','周杰伦','王力宏','陶喆','许嵩','汪苏泷','weeknd','the weekend','后弦','徐良'],
+                    a: ['我听歌挺杂的，华语 R&B 和中国风都爱。常听周杰伦、王力宏、陶喆、许嵩、汪苏泷，也听 The Weeknd。','歌单里有周杰伦《烟花易冷》、王力宏《爱错》、陶喆《普通朋友》、许嵩《天龙八部之宿敌》，还有 The Weeknd 的《Die For You》。点"听歌"标签可以直接听！','周杰伦的中国风、陶喆的 R&B 是我的心头好，最近也循环 The Weeknd。']
+                },
+                {
+                    k: ['足球','踢球','曼联','老特拉福德','喜欢的球队','球队','球迷','球星','看球','支持谁'],
+                    a: ['我是曼联球迷！红魔 forever。在老特拉福德，你可以永远相信奇迹。','最爱曼联，主场老特拉福德，那种逆转和奇迹的感觉太让人热血沸腾了。点"足球"标签能看到现场照片～']
+                },
+                {
+                    k: ['游戏','打游戏','玩什么游戏','无畏契约','valorant','瓦罗兰特','电竞'],
+                    a: ['我主要玩无畏契约（Valorant），点"打游戏"标签还能看我的游戏视频！','平时打打无畏契约，FPS 类的，枪法还凑合哈哈。']
+                },
+                {
+                    k: ['美食','好吃','吃什么','吃货','美食推荐','菜'],
+                    a: ['我可是资深吃货！广式早茶、烧腊、鱼生、刺身都爱，点"美食"标签有我的美食相册。','推荐广州早茶、桑拿鸡、三文鱼甜虾，还有北京的豆汁（这个见仁见智哈哈）。美食区每张照片都有配文～']
+                },
+                {
+                    k: ['旅行','旅游','去过','足迹','哪些城市','出去玩','旅游过'],
+                    a: ['我的足迹还挺多：国内有北京、成都、青岛、拉萨、南阳，国外去过英国、阿姆斯特丹、迪拜、哈萨克斯坦、印度。点"我的足迹"可以看每个城市的照片！','喜欢到处走走，10个城市的照片都在"我的足迹"里，每个城市都有故事。']
+                },
+                {
+                    k: ['北京'],
+                    a: ['去过北京，逛了故宫、长城这些经典，还尝了老北京豆汁，那味道……很独特。','北京的照片在"我的足迹"里，古都的底蕴确实不一样。']
+                },
+                {
+                    k: ['成都'],
+                    a: ['成都太舒服了，火锅、串串、茶馆，节奏慢，适合生活。','去成都就是吃吃吃，火锅和熊猫都安排上了～']
+                },
+                {
+                    k: ['拉萨','西藏'],
+                    a: ['去过拉萨，布达拉宫和高原的蓝天特别震撼，是离天空最近的地方。','拉萨是很净化心灵的一段旅程，照片在足迹里。']
+                },
+                {
+                    k: ['迪拜'],
+                    a: ['迪拜就是纸醉金迷，高楼、沙漠、奢华酒店，反差感拉满。','去了迪拜，现代建筑和沙漠并存，很魔幻。']
+                },
+                {
+                    k: ['英国','伦敦','曼彻斯特'],
+                    a: ['去过英国，作为曼联球迷当然要朝圣老特拉福德，圆梦了！','英国之行最激动的就是到老特拉福德看球，现场氛围绝了。']
+                },
+                {
+                    k: ['阿姆斯特丹','荷兰'],
+                    a: ['阿姆斯特丹很美，运河、自行车、风车，很悠闲的欧洲城市。','荷兰阿姆斯特丹，骑着车逛运河特别惬意。']
+                },
+                {
+                    k: ['哈萨克斯坦'],
+                    a: ['去过哈萨克斯坦，中亚的大草原和异域风情很特别。','哈萨克斯坦地广人稀，自然风光很壮阔。']
+                },
+                {
+                    k: ['印度'],
+                    a: ['去过印度，是个色彩和感官都极其丰富的国家，体验非常独特。','印度给人的冲击感很强，泰姬陵值得一看。']
+                },
+                {
+                    k: ['青岛'],
+                    a: ['青岛的海和啤酒很配，红瓦绿树，德式建筑很漂亮。','去过青岛，海边吹风喝啤酒，很舒服。']
+                },
+                {
+                    k: ['南阳'],
+                    a: ['南阳是河南的一座历史文化名城，武侯祠就在那儿。','去过南阳，中原文化底蕴深厚。']
+                },
+                {
+                    k: ['性格','你是个怎样的人','人怎么样'],
+                    a: ['我嘛，比较随和开朗，爱交朋友，对喜欢的事情（足球、音乐、美食）特别有热情。','算是个有趣、好相处的人，喜欢新鲜事物，也爱到处探索。']
+                },
+                {
+                    k: ['多大','年龄','几岁'],
+                    a: ['我是大一学生，年纪嘛，正是青春正好的时候～','大学生一枚，具体年龄是秘密哈哈。']
+                },
+                {
+                    k: ['女朋友','对象','脱单','单身','谈恋爱'],
+                    a: ['这个嘛……青春的故事都在"我的青春"页面里，你自己去发现～','哈哈这个问题我先保密，不如聊聊我的爱好？']
+                },
+                {
+                    k: ['笑话','讲个笑话','搞笑','逗我'],
+                    a: ['程序员最怕的三件事：需求变更、线上报错、还有——"这个很简单，你顺手改一下"。','为什么足球运动员喜欢下雨天？因为这样他们就能"水"到渠成了⚽']
+                },
+                {
+                    k: ['这个网站','主页','网站','怎么做的','谁做的','个人主页'],
+                    a: ['这个个人主页是我跟着 Vibe Coding 课程，用 AI 辅助一点点做出来的，还在持续迭代～','网站是我自己做的，背景、相册、桌宠、数字分身（就是我啦）都是一步步加上来的。']
+                },
+                {
+                    k: ['桌宠','宠物','那个女孩','右下角'],
+                    a: ['那个是我的互动桌宠，可以拖拽、点击、右键菜单，还能喂吃的、让她睡觉，超多功能～','桌宠是个吸血鬼少女形象，右键她试试，有惊喜！']
+                },
+                {
+                    k: ['我的青春','青春页面'],
+                    a: ['导航栏点"我的青春"就能进入，里面有我的相册和影像，记录了很多回忆。','"我的青春"页面收藏了照片和视频，封面写着"青春不可回收"哈哈。']
+                },
+                {
+                    k: ['谢谢','感谢','thx','thanks'],
+                    a: ['不客气！还有想了解的随时问我～','应该的！陪你聊天很开心。']
+                },
+                {
+                    k: ['再见','拜拜','bye','走了','下次聊','晚安'],
+                    a: ['拜拜！记得有空再来找我聊～','再见！祝你今天愉快，需要时随时点我。']
+                },
+                {
+                    k: ['你会什么','能做什么','功能','会答什么'],
+                    a: ['我知道你的学校、专业、兴趣、音乐、足球、游戏、美食，还有去过的所有城市，随便问！','可以问我"你喜欢什么歌""你去过哪里""你学什么专业"，或者点下面的快捷问题。']
+                }
+            ];
+
+            // 兜底回答
+            const FALLBACK = [
+                '这个问题我还没学会～你可以问问我的学校、专业、兴趣、喜欢的歌，或者去过哪些城市。',
+                '嗯……这个超出我的知识库啦，试试问"你有什么爱好"或"你去过哪里"？',
+                '我暂时答不上来这个，不过关于我的音乐、足球、美食、旅行都能聊！点下面快捷问题试试～'
+            ];
+
+            // 快捷问题
+            const QUICK = ['你是谁？','你学什么专业？','喜欢什么歌？','你是哪个队的球迷？','平时玩什么游戏？','去过哪些城市？','推荐点美食'];
+
+            function findAnswer(text) {
+                const t = text.toLowerCase().replace(/\s/g, '');
+                let best = null, bestLen = 0;
+                for (const item of KB) {
+                    for (const kw of item.k) {
+                        const k = kw.toLowerCase();
+                        if (t.includes(k) && k.length > bestLen) {
+                            best = item; bestLen = k.length;
+                        }
+                    }
+                }
+                if (best) {
+                    return best.a[Math.floor(Math.random() * best.a.length)];
+                }
+                return FALLBACK[Math.floor(Math.random() * FALLBACK.length)];
+            }
+
+            function addMessage(text, who) {
+                const div = document.createElement('div');
+                div.className = 'twin-msg ' + who;
+                div.textContent = text;
+                messagesEl.appendChild(div);
+                messagesEl.scrollTop = messagesEl.scrollHeight;
+                return div;
+            }
+
+            function botReply(userText) {
+                typingEl.classList.add('show');
+                messagesEl.scrollTop = messagesEl.scrollHeight;
+                const delay = 600 + Math.min(userText.length * 40, 800) + Math.random() * 400;
+                setTimeout(function() {
+                    typingEl.classList.remove('show');
+                    addMessage(findAnswer(userText), 'bot');
+                }, delay);
+            }
+
+            function handleSend(text) {
+                text = (text || '').trim();
+                if (!text) return;
+                addMessage(text, 'user');
+                inputEl.value = '';
+                botReply(text);
+            }
+
+            sendBtn.addEventListener('click', function() { handleSend(inputEl.value); });
+            inputEl.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') handleSend(inputEl.value);
+            });
+
+            // 快捷问题
+            QUICK.forEach(function(q) {
+                const b = document.createElement('button');
+                b.textContent = q;
+                b.addEventListener('click', function() { handleSend(q); });
+                quickEl.appendChild(b);
+            });
+
+            // 开关面板
+            let greeted = false;
+            function openPanel() {
+                panel.classList.add('show');
+                if (!greeted) {
+                    greeted = true;
+                    setTimeout(function() {
+                        addMessage('你好呀！我是数字刘子铖 🤖\n我了解他的一切，想问什么直接说，也可以点下面的快捷问题～', 'bot');
+                    }, 300);
+                }
+            }
+            fab.addEventListener('click', function() {
+                if (panel.classList.contains('show')) {
+                    panel.classList.remove('show');
+                } else {
+                    openPanel();
+                }
+            });
+            closeBtn.addEventListener('click', function() { panel.classList.remove('show'); });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDigitalTwin);
+        } else {
+            initDigitalTwin();
+        }
+    </script>
+
+    <!-- 互动桌宠 -->
+    <div class="desktop-pet idle" id="desktopPet">
+        <div class="pet-speech" id="petSpeech">你好呀～</div>
+        <div class="pet-zzz">Zzz</div>
+        <img src="pet.png" alt="桌宠">
+    </div>
+    <!-- 桌宠右键菜单 -->
+    <div class="pet-menu" id="petMenu">
+        <div class="pet-menu-item" data-action="chat"><span class="icon">💬</span>陪我聊聊天</div>
+        <div class="pet-menu-item" data-action="pat"><span class="icon">🤚</span>摸摸头</div>
+        <div class="pet-menu-item" data-action="feed"><span class="icon">🍰</span>喂吃的</div>
+        <div class="pet-menu-divider"></div>
+        <div class="pet-menu-item" data-action="walk"><span class="icon">🚶</span>让她走路</div>
+        <div class="pet-menu-item" data-action="sleep"><span class="icon">😴</span>让她睡觉</div>
+        <div class="pet-menu-item" data-action="follow"><span class="icon">👆</span>跟随鼠标</div>
+        <div class="pet-menu-divider"></div>
+        <div class="pet-menu-item" data-action="resize"><span class="icon">🔍</span>调整大小</div>
+        <div class="pet-menu-item" data-action="topmost"><span class="icon">📌</span>置顶开关</div>
+        <div class="pet-menu-divider"></div>
+        <div class="pet-menu-item" data-action="exit"><span class="icon">👋</span>退出程序</div>
+    </div>
+    <button class="pet-revive" id="petRevive" title="召唤桌宠">🦇</button>
+
+    <!-- ===== 数字分身 ===== -->
+    <button class="twin-fab" id="twinFab" title="和数字分身聊聊">
+        <img src="avatar.jpg" alt="数字分身">
+        <span class="twin-dot"></span>
+    </button>
+    <div class="twin-panel" id="twinPanel">
+        <div class="twin-header">
+            <div class="twin-header-avatar"><img src="avatar.jpg" alt=""></div>
+            <div class="twin-header-info">
+                <div class="twin-header-name">数字刘子铖</div>
+                <div class="twin-header-status">在线，随时聊</div>
+            </div>
+            <button class="twin-close" id="twinClose">×</button>
+        </div>
+        <div class="twin-messages" id="twinMessages"></div>
+        <div class="twin-typing" id="twinTyping"><span></span><span></span><span></span></div>
+        <div class="twin-quick" id="twinQuick"></div>
+        <div class="twin-input-bar">
+            <input type="text" class="twin-input" id="twinInput" placeholder="问我点什么…" maxlength="200">
+            <button class="twin-send" id="twinSend">➤</button>
+        </div>
+    </div>
+</body>
+</html>

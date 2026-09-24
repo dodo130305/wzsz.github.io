@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刘子铖 | 我的青春</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+            background-color: #f5f3ee;
+            background-image: linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.55)), url('page-bg.jpg');
+            background-position: center top;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            color: #1a1a1a;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* 顶部标题区 */
+        .page-header {
+            padding: 60px 20px 20px;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-size: 42px;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+        }
+        .page-header p {
+            font-size: 16px;
+            color: #888;
+            letter-spacing: 2px;
+        }
+
+        /* 内容区域 */
+        .content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 20px 80px;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* 反馈按钮 */
+        .feedback-entry-btn {
+            position: absolute;
+            right: -100px;
+            top: 40px;
+            background: rgba(255, 105, 180, 0.95);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 16px rgba(255, 105, 180, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        .feedback-entry-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+        }
+
+        /* 顶部导航 */
+        .top-nav {
+            position: absolute;
+            right: -340px;
+            top: 36px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            z-index: 100;
+        }
+        .top-nav a {
+            color: #fff;
+            font-size: 26px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+        }
+        .top-nav a:hover {
+            color: #ffb6c1;
+            transform: translateY(-2px);
+        }
+        .top-nav a.active {
+            color: #fff;
+            position: relative;
+        }
+        .top-nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: #ff69b4;
+            border-radius: 2px;
+        }
+
+        /* 卡片 */
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            position: relative;
+            overflow: hidden;
+        }
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 12px;
+            border-left: 4px solid;
+            border-image: linear-gradient(to bottom, #ffb6c1, #ff69b4) 1;
+        }
+
+        /* ===== 照片渐显浏览器 ===== */
+        .photo-viewer {
+            position: relative;
+            width: 100%;
+            height: 75vh;
+            min-height: 420px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #1a1a1a;
+            cursor: pointer;
+            user-select: none;
+        }
+        .photo-viewer .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .photo-viewer .slide.active {
+            opacity: 1;
+            z-index: 2;
+        }
+        .photo-viewer .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .photo-viewer .hint {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            font-size: 13px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            z-index: 10;
+            pointer-events: none;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+        }
+        .photo-viewer .cover-badge {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            background: linear-gradient(135deg, #ff69b4, #ffb6c1);
+            color: #fff;
+            font-size: 13px;
+            padding: 4px 14px;
+            border-radius: 16px;
+            z-index: 10;
+            pointer-events: none;
+            letter-spacing: 1px;
+        }
+
+        /* 缩略图条 */
+        .thumb-strip {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+        .thumb-strip .thumb {
+            flex: 0 0 auto;
+            width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .thumb-strip .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .thumb-strip .thumb.active {
+            opacity: 1;
+            border-color: #ff69b4;
+            transform: scale(1.05);
+        }
+
+        /* 视频区域 */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .video-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            aspect-ratio: 16/9;
+            cursor: pointer;
+        }
+        .video-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .video-item .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 14px;
+            gap: 8px;
+            background: linear-gradient(135deg, #2a2a3a, #1a1a2a);
+        }
+        .video-item .video-placeholder .icon {
+            font-size: 48px;
+        }
+        .video-item .video-placeholder span {
+            color: #999;
+        }
+
+        /* 预览弹窗 */
+        .preview-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+        .preview-modal.show { display: flex; }
+        .preview-modal img, .preview-modal video {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+        .preview-close {
+            position: absolute;
+            top: 20px; right: 30px;
+            color: #fff;
+            font-size: 36px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        /* 桌宠 */
+        .desktop-pet {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 120px;
+            height: 130px;
+            z-index: 2147483647;
+            cursor: grab;
+            user-select: none;
+            background: transparent;
+            border: none;
+        }
+        .desktop-pet img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+        .desktop-pet.idle img { animation: petIdle 3s ease-in-out infinite; }
+        @keyframes petIdle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .pet-speech {
+            position: absolute;
+            top: 10%; right: 100%;
+            margin-right: 12px;
+            background: #fff;
+            border: 2px solid #ffb6c1;
+            border-radius: 16px;
+            padding: 8px 14px;
+            font-size: 13px;
+            color: #333;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 12px rgba(255,182,193,0.3);
+            pointer-events: none;
+            max-width: 180px;
+            text-align: center;
+            z-index: 2147483647;
+        }
+        .pet-speech.show { opacity: 1; transform: scale(1); }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .video-grid { grid-template-columns: 1fr; }
+            .photo-viewer { height: 60vh; min-height: 320px; }
+            .top-nav { right: 20px; top: auto; bottom: 20px; position: fixed; }
+            .feedback-entry-btn { right: 20px; top: auto; bottom: 80px; position: fixed; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面标题 -->
+    <div class="page-header">
+        <h1>我的青春</h1>
+        <p>那些年，那些事，那些人</p>
+    </div>
+
+    <!-- 内容区域 -->
+    <main class="content">
+        <button class="feedback-entry-btn" id="feedbackEntryBtn">💬 反馈</button>
+        <nav class="top-nav">
+            <a href="index.html">主页</a>
+            <a href="youth.html" class="active">我的青春</a>
+        </nav>
+
+        <!-- 青春相册：渐显点击切换 -->
+        <section class="card">
+            <h2 class="card-title">📷 青春相册</h2>
+            <div class="photo-viewer" id="photoViewer">
+                <div class="cover-badge">封面</div>
+                <div class="hint">点击任意处查看下一张 →</div>
+                <!-- slide 由 JS 动态生成 -->
+            </div>
+            <div class="thumb-strip" id="thumbStrip"></div>
+            <p style="margin-top:12px; color:#999; font-size:13px; text-align:center;">
+                💡 后续新增照片：放入 <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;">youth-photos/photo-N.jpg</code> 即可自动加入
+            </p>
+        </section>
+
+        <!-- 视频区 -->
+        <section class="card">
+            <h2 class="card-title">🎬 青春影像</h2>
+            <div class="video-grid" id="videoGrid">
+                <div class="video-item" onclick="previewMedia(this)">
+                    <div class="video-placeholder"><span class="icon">🎥</span><span>添加视频</span></div>
+                </div>
+                <div class="video-item" onclick="previewMedia(this)">
+                    <div class="video-placeholder"><span class="icon">🎥</span><span>添加视频</span></div>
+                </div>
+            </div>
+            <p style="margin-top:16px; color:#999; font-size:13px; text-align:center;">
+                💡 将视频命名为 <code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;">youth-video-1.mp4</code>、<code style="background:#f5f5f5;padding:2px 6px;border-radius:4px;">youth-video-2.mp4</code>... 放入文件夹即可自动显示
+            </p>
+        </section>
+    </main>
+
+    <!-- 预览弹窗 -->
+    <div class="preview-modal" id="previewModal" onclick="closePreview()">
+        <button class="preview-close" onclick="closePreview()">×</button>
+        <div id="previewContent"></div>
+    </div>
+
+    <!-- 桌宠 -->
+    <div class="desktop-pet idle" id="desktopPet">
+        <div class="pet-speech" id="petSpeech">欢迎来到我的青春～</div>
+        <img src="pet.png" alt="桌宠">
+    </div>
+
+    <div class="footer">
+        © 2026 刘子铖 · 青春不散场
+    </div>
+
+    <script>
+        // ===== 照片渐显浏览器 =====
+        // 图片列表：第一张是封面 cover.jpg，其余按 photo-1.jpg, photo-2.jpg ... 自动探测
+        // 后续新增照片：直接在 youth-photos/ 目录加 photo-N.jpg 即可（N 从20开始继续编号）
+        const photoViewer = document.getElementById('photoViewer');
+        const thumbStrip = document.getElementById('thumbStrip');
+
+        // 构建图片列表（cover + 自动探测到的照片）
+        const photoList = ['youth-photos/cover.jpg'];
+        let photoIdx = 1;
+        let photoLoaded = false;
+
+        function buildSlide(src, idx, total) {
+            const slide = document.createElement('div');
+            slide.className = 'slide' + (idx === 0 ? ' active' : '');
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = '青春照片' + (idx + 1);
+            slide.appendChild(img);
+            photoViewer.insertBefore(slide, photoViewer.querySelector('.hint'));
+            return slide;
+        }
+
+        function buildThumb(src, idx, total) {
+            const t = document.createElement('div');
+            t.className = 'thumb' + (idx === 0 ? ' active' : '');
+            t.innerHTML = '<img src="' + src + '" alt="">';
+            t.addEventListener('click', function(e) {
+                e.stopPropagation();
+                goTo(idx);
+            });
+            thumbStrip.appendChild(t);
+            return t;
+        }
+
+        let currentIdx = 0;
+        const slides = [];
+        const thumbs = [];
+
+        function goTo(idx) {
+            if (idx < 0 || idx >= slides.length) return;
+            slides[currentIdx].classList.remove('active');
+            thumbs[currentIdx].classList.remove('active');
+            currentIdx = idx;
+            slides[currentIdx].classList.add('active');
+            thumbs[currentIdx].classList.add('active');
+            // 封面标签只在第一页显示
+            const badge = document.querySelector('.cover-badge');
+            if (badge) badge.style.display = currentIdx === 0 ? '' : 'none';
+        }
+
+        function next() {
+            goTo((currentIdx + 1) % slides.length);
+        }
+
+        // 点击viewer切换下一张
+        photoViewer.addEventListener('click', function(e) {
+            // 点到缩略图不触发
+            if (e.target.closest('.thumb')) return;
+            next();
+        });
+
+        // 自动探测照片：从 photo-1 开始逐个尝试加载，直到失败
+        function tryLoadPhoto(n) {
+            const img = new Image();
+            img.onload = function() {
+                const src = 'youth-photos/photo-' + n + '.jpg';
+                photoList.push(src);
+                slides.push(buildSlide(src, photoList.length - 1, photoList.length));
+                thumbs.push(buildThumb(src, photoList.length - 1, photoList.length));
+                tryLoadPhoto(n + 1);
+            };
+            img.onerror = function() {
+                // 探测结束
+                photoLoaded = true;
+            };
+            img.src = 'youth-photos/photo-' + n + '.jpg';
+        }
+
+        // 先建封面
+        slides.push(buildSlide(photoList[0], 0, 1));
+        thumbs.push(buildThumb(photoList[0], 0, 1));
+        tryLoadPhoto(1);
+
+        // ===== 视频自动加载 =====
+        function autoLoadVideos() {
+            const videoGrid = document.getElementById('videoGrid');
+            const videoPlaceholders = videoGrid.querySelectorAll('.video-placeholder');
+            let videoIndex = 0;
+
+            // 让视频缩略图显示中间一帧作为封面
+            function setPosterFrame(videoEl) {
+                videoEl.addEventListener('loadeddata', function() {
+                    try {
+                        videoEl.currentTime = Math.min(1, (videoEl.duration || 2) / 2);
+                    } catch(e) {}
+                });
+            }
+
+            function tryLoadVideo(n) {
+                if (n > 10) return;
+                const probe = document.createElement('video');
+                probe.preload = 'metadata';
+                probe.onloadedmetadata = function() {
+                    const src = 'youth-video-' + n + '.mp4';
+                    let item;
+                    if (videoIndex < videoPlaceholders.length) {
+                        item = videoPlaceholders[videoIndex].parentElement;
+                    } else {
+                        item = document.createElement('div');
+                        item.className = 'video-item';
+                        item.onclick = function() { previewMedia(this); };
+                        videoGrid.appendChild(item);
+                    }
+                    const v = document.createElement('video');
+                    v.src = src;
+                    v.poster = 'youth-video-' + n + '.jpg';
+                    v.muted = true;
+                    v.loop = true;
+                    v.setAttribute('playsinline', '');
+                    v.preload = 'metadata';
+                    item.innerHTML = '';
+                    item.appendChild(v);
+                    videoIndex++;
+                    tryLoadVideo(n + 1);
+                };
+                probe.onerror = function() { tryLoadVideo(n + 1); };
+                probe.src = 'youth-video-' + n + '.mp4';
+            }
+            tryLoadVideo(1);
+        }
+
+        // ===== 预览弹窗 =====
+        function previewMedia(item) {
+            const modal = document.getElementById('previewModal');
+            const content = document.getElementById('previewContent');
+            const img = item.querySelector('img');
+            const video = item.querySelector('video');
+            if (img) {
+                content.innerHTML = '<img src="' + img.src + '" style="max-width:90%;max-height:90%;border-radius:8px;">';
+            } else if (video) {
+                content.innerHTML = '<video src="' + video.src + '" controls autoplay style="max-width:90%;max-height:90%;border-radius:8px;"></video>';
+            } else {
+                return;
+            }
+            modal.classList.add('show');
+        }
+        function closePreview() {
+            document.getElementById('previewModal').classList.remove('show');
+            document.getElementById('previewContent').innerHTML = '';
+        }
+
+        // ===== 桌宠（简化版） =====
+        function initPet() {
+            const pet = document.getElementById('desktopPet');
+            const speech = document.getElementById('petSpeech');
+            if (!pet) return;
+            const phrases = ['欢迎来到我的青春～', '这些回忆好珍贵呀', '青春不散场！', '陪我看看照片嘛～', '那时候真好呀', '再看看这个！', '嘿嘿，被你发现了'];
+            let timer = null;
+            function say(text) {
+                speech.textContent = text;
+                speech.classList.add('show');
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(() => speech.classList.remove('show'), 2500);
+            }
+            pet.addEventListener('click', function() {
+                say(phrases[Math.floor(Math.random() * phrases.length)]);
+            });
+            // 拖拽
+            let sx = 0, sy = 0, sl = 0, st = 0;
+            pet.addEventListener('mousedown', function(e) {
+                sx = e.clientX; sy = e.clientY;
+                const r = pet.getBoundingClientRect();
+                sl = r.left; st = r.top;
+                pet.style.right = 'auto'; pet.style.bottom = 'auto';
+                function mv(ev) {
+                    pet.style.left = (sl + ev.clientX - sx) + 'px';
+                    pet.style.top = (st + ev.clientY - sy) + 'px';
+                }
+                function up() {
+                    document.removeEventListener('mousemove', mv);
+                    document.removeEventListener('mouseup', up);
+                }
+                document.addEventListener('mousemove', mv);
+                document.addEventListener('mouseup', up);
+                e.preventDefault();
+            });
+            setTimeout(() => say('欢迎来到我的青春～'), 1500);
+        }
+
+        // 初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                autoLoadVideos();
+                initPet();
+            });
+        } else {
+            autoLoadVideos();
+            initPet();
+        }
+    </script>
+</body>
+</html>
